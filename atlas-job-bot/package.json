@@ -1,0 +1,16 @@
+{
+  "name": "atlas-job-bot",
+  "version": "1.0.0",
+  "description": "Daily job-listing email digest for fresher tech roles — runs on Cloudflare Workers",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "kv:create": "wrangler kv namespace create JOBS_KV"
+  },
+  "devDependencies": {
+    "wrangler": "^3.90.0"
+  }
+}

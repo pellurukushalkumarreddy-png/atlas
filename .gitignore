@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Wrangler & Cloudflare
+.wrangler/
+.dev.vars
+
+# Secrets
+.env
+.env.local
+*.env
+
+# Real config (has personal email) — use config.example.js as template
+atlas-job-bot/src/config.js
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*

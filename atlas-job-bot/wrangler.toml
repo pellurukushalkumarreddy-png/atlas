@@ -1,0 +1,29 @@
+# Cloudflare Workers config — Atlas Job Bot
+# Docs: https://developers.cloudflare.com/workers/wrangler/configuration/
+
+name = "atlas-job-bot"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+# Cron trigger — runs daily at 01:30 UTC = 7:00 AM IST
+[triggers]
+crons = ["30 1 * * *"]
+
+# KV namespace for deduping seen jobs.
+# After running `wrangler kv namespace create JOBS_KV`, paste the returned ID below.
+[[kv_namespaces]]
+binding = "JOBS_KV"
+id = "REPLACE_WITH_KV_ID_FROM_WRANGLER_OUTPUT"
+
+# === Required secrets ===
+# Don't put values here — set them via the CLI (encrypted, never committed):
+#
+#   wrangler secret put ADZUNA_APP_ID
+#   wrangler secret put ADZUNA_APP_KEY
+#   wrangler secret put JOOBLE_KEY
+#   wrangler secret put RESEND_KEY
+#   wrangler secret put RESEND_FROM        # use: onboarding@resend.dev
+#   wrangler secret put TRIGGER_TOKEN      # any random string of your choice
+#
+# Also: copy `src/config.example.js` to `src/config.js` and edit your email + searches.
+# (`src/config.js` is gitignored so your email doesn't go public.)

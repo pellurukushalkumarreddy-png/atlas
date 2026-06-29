@@ -1,0 +1,2054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Atlas — Learn, Apply, Grow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0f0e1a;
+    --surface: rgba(255, 255, 255, 0.04);
+    --surface-hover: rgba(255, 255, 255, 0.07);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --text: #f5f3ff; --text2: #a8a4c7; --text3: #6b6789;
+    --accent: #a78bfa;
+    --accent-gradient: linear-gradient(135deg, #a78bfa 0%, #f0abfc 50%, #fbbf24 100%);
+    --accent-soft: linear-gradient(135deg, rgba(167,139,250,0.15), rgba(240,171,252,0.1));
+    --radius: 12px; --radius-lg: 20px; --radius-xl: 28px;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); background-image: radial-gradient(ellipse at top left, #1a1832 0%, #0f0e1a 50%), radial-gradient(ellipse at bottom right, #1f1a3a 0%, #0f0e1a 60%); background-attachment: fixed; color: var(--text); min-height: 100vh; padding: 3rem 1.5rem 4rem; -webkit-font-smoothing: antialiased; line-height: 1.5; }
+  body::before { content: ''; position: fixed; top: -200px; left: -200px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(167,139,250,0.15), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; animation: float 20s ease-in-out infinite; }
+  body::after { content: ''; position: fixed; bottom: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(240,171,252,0.12), transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; animation: float 25s ease-in-out infinite reverse; }
+  @keyframes float { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(50px, 50px); } }
+
+  .container { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+  .header { margin-bottom: 1.5rem; text-align: center; }
+  .logo { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 1rem; padding: 6px 14px; background: var(--accent-soft); border: 1px solid var(--border); border-radius: 100px; font-size: 12px; font-weight: 500; letter-spacing: 0.5px; color: var(--accent); text-transform: uppercase; }
+  .logo-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  .header h1 { font-family: 'Fraunces', serif; font-size: 56px; font-weight: 600; letter-spacing: -2px; line-height: 1.05; background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; }
+  .header h1 em { font-style: italic; font-weight: 400; }
+  .header p { color: var(--text2); font-size: 16px; max-width: 540px; margin: 0 auto; }
+
+  .tabs { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 100px; padding: 5px; width: fit-content; margin: 0 auto 2rem; flex-wrap: wrap; justify-content: center; }
+  .tab-btn { padding: 10px 22px; border-radius: 100px; border: none; background: none; color: var(--text2); font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 8px; transition: all 0.25s ease; }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { background: var(--accent-gradient); color: #1a0f3e; font-weight: 600; box-shadow: 0 4px 12px rgba(167,139,250,0.3); }
+  .tab-count { background: rgba(0,0,0,0.2); color: inherit; font-size: 11px; padding: 1px 7px; border-radius: 100px; font-weight: 600; }
+  .tab-btn.active .tab-count { background: rgba(0,0,0,0.15); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 2rem; }
+  .stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; transition: all 0.3s; }
+  .stat:hover { background: var(--surface-hover); border-color: var(--border-strong); transform: translateY(-2px); }
+  .stat-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 1.2px; font-weight: 500; margin-bottom: 10px; }
+  .stat-value { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 500; color: var(--text); line-height: 1; letter-spacing: -1px; }
+  .stat-value .pct { font-size: 22px; color: var(--text2); }
+
+  .add-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 20px 24px; margin-bottom: 1.5rem; }
+  .add-toggle { display: flex; align-items: center; gap: 12px; background: none; border: none; cursor: pointer; font-size: 15px; font-weight: 500; color: var(--text); width: 100%; text-align: left; font-family: inherit; }
+  .add-icon { width: 36px; height: 36px; background: var(--accent-gradient); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; transition: transform 0.3s; }
+  .add-toggle:hover .add-icon { transform: rotate(90deg) scale(1.05); }
+  .add-toggle-text { flex: 1; }
+  .add-toggle-sub { font-size: 12px; color: var(--text3); font-weight: 400; margin-top: 2px; }
+  .add-form { display: none; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+  .add-form.open { display: block; animation: slideDown 0.3s ease; }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field.full { grid-column: 1 / -1; }
+  .field label { font-size: 11px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; }
+  .field input, .field select, .field textarea { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: var(--radius); padding: 11px 14px; font-size: 14px; color: var(--text); outline: none; transition: all 0.2s; font-family: inherit; width: 100%; }
+  .field input::placeholder, .field textarea::placeholder { color: var(--text3); }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); background: rgba(0,0,0,0.3); box-shadow: 0 0 0 4px rgba(167,139,250,0.1); }
+  .field select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a8a4c7' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; }
+  .field textarea { resize: vertical; min-height: 70px; }
+  .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+  .btn { padding: 11px 22px; border-radius: var(--radius); font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; font-family: inherit; }
+  .btn-primary { background: var(--accent-gradient); color: #1a0f3e; box-shadow: 0 4px 16px rgba(167,139,250,0.3); }
+  .btn-primary:hover { transform: translateY(-1px); }
+  .btn-ghost { background: var(--surface); border: 1px solid var(--border); color: var(--text2); }
+  .btn-ghost:hover { background: var(--surface-hover); color: var(--text); }
+
+  .toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .filter-btn { padding: 8px 16px; border-radius: 100px; border: 1px solid var(--border); background: var(--surface); font-size: 13px; color: var(--text2); cursor: pointer; transition: all 0.2s; font-family: inherit; font-weight: 500; }
+  .filter-btn:hover { background: var(--surface-hover); color: var(--text); }
+  .filter-btn.active { background: var(--accent-gradient); color: #1a0f3e; border-color: transparent; box-shadow: 0 2px 12px rgba(167,139,250,0.3); }
+  .search { margin-left: auto; padding: 9px 16px 9px 38px; border-radius: 100px; border: 1px solid var(--border); background: var(--surface) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23a8a4c7' stroke-width='2'><circle cx='11' cy='11' r='8'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>") no-repeat 14px center; font-size: 13px; color: var(--text); outline: none; width: 220px; font-family: inherit; transition: all 0.2s; }
+  .search::placeholder { color: var(--text3); }
+  .search:focus { border-color: var(--accent); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 22px; position: relative; transition: all 0.3s; overflow: hidden; }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent-gradient); opacity: 0; transition: opacity 0.3s; }
+  .card:hover { background: var(--surface-hover); border-color: var(--border-strong); transform: translateY(-3px); box-shadow: 0 20px 40px -20px rgba(0,0,0,0.4); }
+  .card:hover::before { opacity: 1; }
+  .card-title { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; color: var(--text); margin-bottom: 4px; letter-spacing: -0.5px; line-height: 1.2; }
+  .card-sub { font-size: 13px; color: var(--text2); margin-bottom: 12px; }
+  .badges { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+  .badge { font-size: 11px; font-weight: 600; padding: 4px 11px; border-radius: 100px; letter-spacing: 0.3px; }
+  .badge-todo { background: rgba(168,164,199,0.15); color: #c4c0e0; border: 1px solid rgba(168,164,199,0.2); }
+  .badge-inprog { background: rgba(96,165,250,0.15); color: #93c5fd; border: 1px solid rgba(96,165,250,0.3); }
+  .badge-done { background: rgba(74,222,128,0.15); color: #86efac; border: 1px solid rgba(74,222,128,0.3); }
+  .badge-paused { background: rgba(251,191,36,0.15); color: #fcd34d; border: 1px solid rgba(251,191,36,0.3); }
+  .badge-applied { background: rgba(168,164,199,0.15); color: #c4c0e0; border: 1px solid rgba(168,164,199,0.2); }
+  .badge-oa { background: rgba(96,165,250,0.15); color: #93c5fd; border: 1px solid rgba(96,165,250,0.3); }
+  .badge-interview { background: rgba(167,139,250,0.2); color: #c4b5fd; border: 1px solid rgba(167,139,250,0.4); }
+  .badge-offer { background: rgba(74,222,128,0.15); color: #86efac; border: 1px solid rgba(74,222,128,0.3); }
+  .badge-rejected { background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+  .badge-ghosted { background: rgba(251,191,36,0.15); color: #fcd34d; border: 1px solid rgba(251,191,36,0.3); }
+  .badge-cat { background: rgba(167,139,250,0.12); color: #c4b5fd; border: 1px solid rgba(167,139,250,0.25); }
+  .badge-resource { background: rgba(240,171,252,0.12); color: #f5d0fe; border: 1px solid rgba(240,171,252,0.25); }
+
+  .progress-section { margin-bottom: 14px; }
+  .progress-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .progress-header .label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; }
+  .progress-header .value { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 500; color: var(--text); }
+  .bar-bg { background: rgba(0,0,0,0.3); height: 8px; border-radius: 100px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 100px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
+  .progress-controls { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+  .nudge { width: 30px; height: 30px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); color: var(--text2); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-weight: 600; }
+  .nudge:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+  .pct-field { width: 60px; text-align: center; padding: 6px 8px; border-radius: 10px; border: 1px solid var(--border); background: rgba(0,0,0,0.2); font-size: 13px; color: var(--text); font-family: inherit; outline: none; font-weight: 600; }
+  .pct-field:focus { border-color: var(--accent); }
+  .pct-label { font-size: 12px; color: var(--text3); }
+
+  .job-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; margin-bottom: 12px; font-size: 12px; }
+  .job-meta-label { color: var(--text3); text-transform: uppercase; letter-spacing: 0.6px; font-size: 10px; font-weight: 600; }
+  .job-meta-val { color: var(--text); font-weight: 500; word-break: break-word; }
+  .job-meta-val a { color: var(--accent); text-decoration: none; }
+  .job-meta-val a:hover { text-decoration: underline; }
+  .card-notes { font-size: 13px; color: var(--text2); line-height: 1.6; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); font-style: italic; }
+  .card-footer { display: flex; gap: 8px; margin-top: 16px; }
+  .card-btn { flex: 1; padding: 8px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; color: var(--text2); cursor: pointer; transition: all 0.2s; font-family: inherit; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 5px; }
+  .card-btn:hover { background: var(--surface-hover); color: var(--text); border-color: var(--border-strong); }
+  .card-btn.del:hover { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); color: #fca5a5; }
+  .card-btn.teach:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+  .card-date { font-size: 11px; color: var(--text3); margin-top: 12px; }
+  .empty { grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; }
+  .empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.6; }
+  .empty-title { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 500; margin-bottom: 8px; color: var(--text); }
+  .empty-sub { font-size: 14px; color: var(--text2); }
+
+  /* === Library === */
+  .lib-intro { text-align: center; margin-bottom: 1.5rem; }
+  .lib-intro p { color: var(--text2); font-size: 14px; max-width: 580px; margin: 0 auto; }
+  .lib-categories { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .lib-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 20px; cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden; }
+  .lib-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent-gradient); opacity: 0; transition: opacity 0.3s; }
+  .lib-card:hover { background: var(--surface-hover); border-color: var(--border-strong); transform: translateY(-3px); box-shadow: 0 20px 40px -20px rgba(0,0,0,0.4); }
+  .lib-card:hover::before { opacity: 1; }
+  .lib-card-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .lib-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; background: var(--accent-soft); border: 1px solid var(--border); flex-shrink: 0; }
+  .lib-card-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; color: var(--text); letter-spacing: -0.3px; line-height: 1.2; }
+  .lib-card-cat { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; font-weight: 600; }
+  .lib-card-desc { font-size: 13px; color: var(--text2); line-height: 1.5; margin-bottom: 12px; }
+  .lib-card-meta { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--text3); }
+
+  .lib-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1100; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .lib-modal-overlay.open { display: flex; }
+
+  /* === Bot dashboard === */
+  .bot-setup { max-width: 560px; margin: 2rem auto; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 2rem; }
+  .bot-setup h3 { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 500; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .bot-setup p { color: var(--text2); font-size: 14px; margin-bottom: 18px; line-height: 1.6; }
+  .bot-setup .field { margin-bottom: 14px; }
+  .bot-setup label { font-size: 11px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; display: block; margin-bottom: 6px; }
+  .bot-setup input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: var(--radius); padding: 11px 14px; font-size: 14px; color: var(--text); outline: none; font-family: inherit; }
+  .bot-setup input:focus { border-color: var(--accent); }
+  .bot-setup .hint { font-size: 12px; color: var(--text3); margin-top: 5px; }
+  .bot-warning { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.25); color: #fcd34d; border-radius: var(--radius); padding: 12px 14px; font-size: 13px; margin-bottom: 16px; line-height: 1.5; }
+
+  .bot-status-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .bot-status-bar h2 { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 500; letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px; }
+  .bot-status-pill { font-size: 11px; padding: 4px 11px; border-radius: 100px; font-weight: 600; letter-spacing: 0.3px; }
+  .bot-status-pill.ok { background: rgba(74,222,128,0.15); color: #86efac; border: 1px solid rgba(74,222,128,0.3); }
+  .bot-status-pill.bad { background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+  .bot-status-pill.idle { background: rgba(168,164,199,0.15); color: #c4c0e0; border: 1px solid rgba(168,164,199,0.2); }
+  .bot-bar-actions { display: flex; gap: 8px; }
+
+  .bot-search-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 8px; }
+  .bot-search-label { font-size: 14px; font-weight: 500; color: var(--text); }
+  .bot-search-meta { font-size: 12px; color: var(--text3); margin-top: 2px; }
+  .bot-search-count { font-size: 12px; color: var(--accent); font-weight: 600; }
+
+  .bot-job-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px 18px; margin-bottom: 10px; transition: all 0.2s; }
+  .bot-job-card:hover { background: var(--surface-hover); border-color: var(--border-strong); }
+  .bot-job-title { font-weight: 600; font-size: 15px; color: var(--text); margin-bottom: 4px; }
+  .bot-job-meta { font-size: 13px; color: var(--text2); margin-bottom: 8px; }
+  .bot-job-desc { font-size: 12px; color: var(--text3); line-height: 1.5; margin-bottom: 12px; }
+  .bot-job-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .bot-job-source { font-size: 10px; font-weight: 600; padding: 3px 9px; border-radius: 100px; letter-spacing: 0.3px; }
+
+  .bot-section { margin-bottom: 1.75rem; }
+  .bot-section-title { font-size: 12px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 10px; }
+
+  .bot-history-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 6px; font-size: 13px; }
+  .bot-history-time { color: var(--text2); }
+  .bot-history-result { color: var(--text); font-weight: 500; }
+
+  .bot-stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 1.5rem; }
+  @media (max-width: 700px) { .bot-stat-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  /* === Plans === */
+  .plan-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 22px; cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden; }
+  .plan-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent-gradient); opacity: 0; transition: opacity 0.3s; }
+  .plan-card:hover { background: var(--surface-hover); border-color: var(--border-strong); transform: translateY(-3px); }
+  .plan-card:hover::before { opacity: 1; }
+  .plan-card-title { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; color: var(--text); margin-bottom: 4px; letter-spacing: -0.5px; line-height: 1.2; }
+  .plan-card-sub { font-size: 13px; color: var(--text2); margin-bottom: 14px; }
+  .plan-card-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .plan-card-progress-bar { flex: 1; height: 6px; background: rgba(0,0,0,0.3); border-radius: 100px; overflow: hidden; }
+  .plan-card-progress-fill { height: 100%; background: var(--accent-gradient); border-radius: 100px; transition: width 0.5s; }
+  .plan-card-progress-text { font-size: 12px; color: var(--text2); font-weight: 600; }
+  .plan-card-meta { display: flex; gap: 14px; font-size: 12px; color: var(--text3); }
+  .plan-card-meta strong { color: var(--text); font-weight: 600; }
+
+  .plan-day { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; display: flex; gap: 14px; align-items: flex-start; transition: all 0.2s; }
+  .plan-day.done { background: rgba(74,222,128,0.08); border-color: rgba(74,222,128,0.3); }
+  .plan-day-num { width: 32px; height: 32px; border-radius: 10px; background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: 'Fraunces', serif; }
+  .plan-day.done .plan-day-num { background: rgba(74,222,128,0.2); color: #86efac; }
+  .plan-day-body { flex: 1; }
+  .plan-day-title { font-weight: 600; font-size: 14px; color: var(--text); margin-bottom: 4px; }
+  .plan-day-target { font-size: 13px; color: var(--text2); line-height: 1.5; }
+  .plan-day-check { width: 24px; height: 24px; border-radius: 8px; border: 1.5px solid var(--border-strong); background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
+  .plan-day-check.checked { background: var(--accent-gradient); border-color: transparent; color: #1a0f3e; }
+  .plan-day-check svg { width: 14px; height: 14px; opacity: 0; }
+  .plan-day-check.checked svg { opacity: 1; }
+
+  .quiz-section { margin-top: 24px; padding: 20px; background: var(--accent-soft); border: 1px solid rgba(167,139,250,0.3); border-radius: var(--radius-lg); }
+  .quiz-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .quiz-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .quiz-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; color: var(--text); letter-spacing: -0.3px; }
+  .quiz-meta { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .quiz-locked { text-align: center; padding: 16px; color: var(--text2); font-size: 13px; }
+  .quiz-question { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 10px; }
+  .quiz-q-text { font-weight: 600; font-size: 14px; color: var(--text); margin-bottom: 10px; }
+  .quiz-q-num { color: var(--accent); margin-right: 6px; }
+  .quiz-option { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px; cursor: pointer; font-size: 13px; color: var(--text); transition: all 0.15s; }
+  .quiz-option:hover { background: var(--surface-hover); border-color: var(--border-strong); }
+  .quiz-option.selected { background: var(--accent-soft); border-color: var(--accent); }
+  .quiz-option.correct { background: rgba(74,222,128,0.15); border-color: rgba(74,222,128,0.4); color: #86efac; }
+  .quiz-option.incorrect { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); color: #fca5a5; }
+  .quiz-option input { accent-color: var(--accent); pointer-events: none; }
+  .quiz-result { text-align: center; padding: 18px; border-radius: var(--radius); margin-top: 16px; }
+  .quiz-result.passed { background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.3); }
+  .quiz-result.failed { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); }
+  .quiz-result-score { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 500; letter-spacing: -1px; }
+  .quiz-result.passed .quiz-result-score { color: #86efac; }
+  .quiz-result.failed .quiz-result-score { color: #fca5a5; }
+  .quiz-result-text { font-size: 13px; color: var(--text2); margin-top: 6px; }
+  .lib-modal { background: rgba(20,18,38,0.98); border: 1px solid var(--border-strong); border-radius: var(--radius-xl); max-width: 720px; width: 100%; max-height: 85vh; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 30px 80px rgba(0,0,0,0.7); animation: modalIn 0.3s cubic-bezier(0.4,0,0.2,1); }
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  .lib-modal-header { padding: 24px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; background: var(--accent-soft); }
+  .lib-modal-icon { width: 60px; height: 60px; border-radius: 18px; background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; font-size: 30px; flex-shrink: 0; box-shadow: 0 8px 24px rgba(167,139,250,0.3); }
+  .lib-modal-title-block { flex: 1; }
+  .lib-modal-title { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 500; color: var(--text); letter-spacing: -0.5px; }
+  .lib-modal-sub { font-size: 13px; color: var(--text2); margin-top: 4px; }
+  .lib-modal-close { background: rgba(0,0,0,0.3); border: 1px solid var(--border); cursor: pointer; color: var(--text2); padding: 8px; border-radius: 50%; transition: all 0.2s; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; }
+  .lib-modal-close:hover { background: rgba(0,0,0,0.5); color: var(--text); }
+  .lib-modal-body { overflow-y: auto; padding: 20px 28px 24px; }
+  .lib-modal-body::-webkit-scrollbar { width: 6px; }
+  .lib-modal-body::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 100px; }
+  .lib-section { margin-bottom: 20px; }
+  .lib-section-title { font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .lib-section-title::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+  .lib-link { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 8px; color: var(--text); text-decoration: none; transition: all 0.2s; }
+  .lib-link:hover { background: var(--surface-hover); border-color: var(--accent); transform: translateX(4px); }
+  .lib-link-icon { width: 32px; height: 32px; border-radius: 8px; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .lib-link-text { flex: 1; min-width: 0; }
+  .lib-link-name { font-size: 14px; font-weight: 500; color: var(--text); }
+  .lib-link-desc { font-size: 12px; color: var(--text3); margin-top: 1px; }
+  .lib-link-arrow { color: var(--text3); flex-shrink: 0; }
+  .lib-link:hover .lib-link-arrow { color: var(--accent); }
+  .lib-add-tracker { margin-top: 16px; padding: 14px; background: var(--accent-soft); border: 1px solid rgba(167,139,250,0.3); border-radius: var(--radius); display: flex; align-items: center; gap: 10px; }
+  .lib-add-tracker-text { flex: 1; font-size: 13px; color: var(--text); }
+  .lib-add-tracker button { padding: 8px 14px; border-radius: 8px; background: var(--accent-gradient); color: #1a0f3e; border: none; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap; }
+
+  #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--accent-gradient); color: #1a0f3e; padding: 12px 24px; border-radius: 100px; font-size: 13px; font-weight: 600; opacity: 0; transition: all 0.3s; pointer-events: none; box-shadow: 0 10px 30px rgba(167,139,250,0.4); z-index: 1200; }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* Sage */
+  .sage-fab { position: fixed; bottom: 30px; right: 30px; width: 64px; height: 64px; border-radius: 50%; background: var(--accent-gradient); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(167,139,250,0.5); z-index: 999; transition: transform 0.3s; }
+  .sage-fab:hover { transform: scale(1.08) rotate(-5deg); }
+  .sage-fab svg { width: 28px; height: 28px; color: #1a0f3e; }
+  .sage-fab::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid var(--accent); opacity: 0; animation: ping 2.5s ease-out infinite; }
+  @keyframes ping { 0% { opacity: 0.6; transform: scale(0.9); } 100% { opacity: 0; transform: scale(1.3); } }
+  .sage-panel { position: fixed; bottom: 110px; right: 30px; width: 420px; max-width: calc(100vw - 40px); height: 600px; max-height: calc(100vh - 140px); background: rgba(20,18,38,0.95); backdrop-filter: blur(20px); border: 1px solid var(--border-strong); border-radius: var(--radius-xl); display: none; flex-direction: column; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.6); z-index: 998; }
+  .sage-panel.open { display: flex; }
+  .sage-header { padding: 18px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; background: var(--accent-soft); }
+  .sage-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 20px; color: #1a0f3e; font-weight: 600; }
+  .sage-meta { flex: 1; }
+  .sage-name { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 500; color: var(--text); }
+  .sage-status { font-size: 11px; color: var(--accent); display: flex; align-items: center; gap: 5px; }
+  .sage-status::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 6px #4ade80; }
+  .sage-close { background: none; border: none; cursor: pointer; color: var(--text2); padding: 6px; border-radius: 8px; }
+  .sage-close:hover { background: var(--surface); color: var(--text); }
+  .sage-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .sage-messages::-webkit-scrollbar { width: 6px; }
+  .sage-messages::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 100px; }
+  .msg { display: flex; gap: 10px; max-width: 90%; }
+  .msg.user { align-self: flex-end; flex-direction: row-reverse; }
+  .msg-bubble { padding: 11px 15px; border-radius: 18px; font-size: 14px; line-height: 1.55; word-wrap: break-word; white-space: pre-wrap; }
+  .msg.sage .msg-bubble { background: var(--surface); border: 1px solid var(--border); color: var(--text); border-bottom-left-radius: 6px; }
+  .msg.user .msg-bubble { background: var(--accent-gradient); color: #1a0f3e; border-bottom-right-radius: 6px; font-weight: 500; }
+  .msg-bubble code { background: rgba(0,0,0,0.3); padding: 1px 6px; border-radius: 4px; font-size: 12px; }
+  .msg-bubble strong { font-weight: 600; }
+  .typing { display: flex; gap: 4px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; border-bottom-left-radius: 6px; width: fit-content; }
+  .typing span { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: typing 1.4s infinite ease-in-out; }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typing { 0%, 60%, 100% { opacity: 0.3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-4px); } }
+  .sage-quick { display: flex; gap: 6px; padding: 0 20px 12px; overflow-x: auto; scrollbar-width: none; }
+  .sage-quick::-webkit-scrollbar { display: none; }
+  .quick-chip { flex-shrink: 0; padding: 6px 12px; border-radius: 100px; border: 1px solid var(--border); background: var(--surface); color: var(--text2); font-size: 12px; cursor: pointer; font-family: inherit; white-space: nowrap; }
+  .quick-chip:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+  .sage-input-area { padding: 14px 16px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; background: rgba(0,0,0,0.2); align-items: center; }
+  .sage-attach { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface); color: var(--text2); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
+  .sage-attach:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+  .sage-attach svg { width: 18px; height: 18px; }
+  .attach-preview { padding: 8px 16px; background: rgba(0,0,0,0.3); border-top: 1px solid var(--border); display: none; align-items: center; gap: 10px; }
+  .attach-preview.show { display: flex; }
+  .attach-preview img { width: 44px; height: 44px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); }
+  .attach-preview-info { flex: 1; min-width: 0; font-size: 12px; color: var(--text2); }
+  .attach-preview-name { color: var(--text); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .attach-remove { background: rgba(239,68,68,0.15); color: #fca5a5; border: none; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .attach-remove:hover { background: rgba(239,68,68,0.3); }
+
+  .tool-card { background: var(--accent-soft); border: 1px solid rgba(167,139,250,0.3); border-radius: var(--radius-lg); padding: 14px; margin-top: 4px; }
+  .tool-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+  .tool-field { margin-bottom: 8px; }
+  .tool-field label { font-size: 10px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; display: block; margin-bottom: 3px; }
+  .tool-field input, .tool-field textarea, .tool-field select { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; font-size: 13px; color: var(--text); outline: none; font-family: inherit; }
+  .tool-field input:focus, .tool-field textarea:focus, .tool-field select:focus { border-color: var(--accent); }
+  .tool-field textarea { min-height: 50px; resize: vertical; }
+  .tool-actions { display: flex; gap: 6px; margin-top: 10px; }
+  .tool-btn { flex: 1; padding: 8px; border-radius: 8px; border: none; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+  .tool-btn-yes { background: var(--accent-gradient); color: #1a0f3e; }
+  .tool-btn-no { background: var(--surface); color: var(--text2); border: 1px solid var(--border); }
+  .tool-btn-yes:hover { transform: translateY(-1px); }
+  .tool-batch-item { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; margin-bottom: 6px; display: flex; gap: 8px; align-items: center; }
+  .tool-batch-item input[type=checkbox] { accent-color: var(--accent); }
+  .tool-done { font-size: 12px; color: #86efac; font-weight: 500; padding: 6px 0; }
+  .sage-input { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 100px; padding: 10px 16px; color: var(--text); font-size: 14px; outline: none; font-family: inherit; }
+  .sage-input:focus { border-color: var(--accent); }
+  .sage-send { width: 40px; height: 40px; border-radius: 50%; border: none; background: var(--accent-gradient); color: #1a0f3e; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .sage-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  @media (max-width: 700px) {
+    body { padding: 2rem 1rem 3rem; }
+    .header h1 { font-size: 40px; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .form-grid { grid-template-columns: 1fr; }
+    .search { width: 100%; margin-left: 0; }
+    .sage-panel { right: 10px; bottom: 90px; }
+    .sage-fab { bottom: 20px; right: 20px; }
+    .tab-btn { padding: 10px 14px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo"><span class="logo-dot"></span>Atlas</div>
+    <h1>Learn, apply, <em>grow.</em></h1>
+    <p>Your personal companion for learning, job hunting, and discovering what to study next — guided by Sage, your AI mentor.</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="learning" onclick="switchTab('learning')">📚 Learning <span class="tab-count" id="count-learning">0</span></button>
+    <button class="tab-btn" data-tab="jobs" onclick="switchTab('jobs')">💼 Jobs <span class="tab-count" id="count-jobs">0</span></button>
+    <button class="tab-btn" data-tab="library" onclick="switchTab('library')">📖 Library</button>
+    <button class="tab-btn" data-tab="plans" onclick="switchTab('plans')">🗓️ Plans <span class="tab-count" id="count-plans">0</span></button>
+    <button class="tab-btn" data-tab="bot" onclick="switchTab('bot')">🤖 Bot <span class="tab-count" id="bot-status-dot" style="background:#6b6789;color:transparent;width:10px;padding:0;line-height:0;">●</span></button>
+  </div>
+
+  <!-- LEARNING -->
+  <div class="tab-panel active" id="tab-learning">
+    <div class="stats">
+      <div class="stat"><div class="stat-label">Topics</div><div class="stat-value" id="s-total">0</div></div>
+      <div class="stat"><div class="stat-label">Active</div><div class="stat-value" id="s-inprog">0</div></div>
+      <div class="stat"><div class="stat-label">Mastered</div><div class="stat-value" id="s-done">0</div></div>
+      <div class="stat"><div class="stat-label">Avg progress</div><div class="stat-value"><span id="s-avg">0</span><span class="pct">%</span></div></div>
+    </div>
+    <div class="add-box">
+      <button class="add-toggle" onclick="toggleForm('add-form')">
+        <div class="add-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        <div class="add-toggle-text">Start something new<div class="add-toggle-sub">Add a topic, course, book, or skill</div></div>
+      </button>
+      <div class="add-form" id="add-form">
+        <div class="form-grid">
+          <div class="field"><label>What are you learning?</label><input type="text" id="f-title" placeholder="React, Spanish, Piano..." /></div>
+          <div class="field"><label>Category</label><input type="text" id="f-cat" placeholder="Programming, Language..." /></div>
+          <div class="field"><label>Resource</label><input type="text" id="f-resource" placeholder="Udemy, book, YouTube..." /></div>
+          <div class="field"><label>Status</label><select id="f-status"><option value="todo">Not started</option><option value="in-progress">In progress</option><option value="done">Completed</option><option value="paused">Paused</option></select></div>
+        </div>
+        <div class="field" style="margin-bottom:14px;"><label>Notes & goals</label><textarea id="f-notes" placeholder="What do you want to achieve?"></textarea></div>
+        <div class="form-actions"><button class="btn btn-ghost" onclick="toggleForm('add-form')">Cancel</button><button class="btn btn-primary" onclick="addItem()">Add to Atlas</button></div>
+      </div>
+    </div>
+    <div class="toolbar">
+      <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('todo',this)">Not started</button>
+      <button class="filter-btn" onclick="setFilter('in-progress',this)">In progress</button>
+      <button class="filter-btn" onclick="setFilter('done',this)">Mastered</button>
+      <button class="filter-btn" onclick="setFilter('paused',this)">Paused</button>
+      <input class="search" type="text" id="search" placeholder="Search..." oninput="render()" />
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <!-- JOBS -->
+  <div class="tab-panel" id="tab-jobs">
+    <div class="stats">
+      <div class="stat"><div class="stat-label">Applied</div><div class="stat-value" id="j-total">0</div></div>
+      <div class="stat"><div class="stat-label">In pipeline</div><div class="stat-value" id="j-active">0</div></div>
+      <div class="stat"><div class="stat-label">Interviews</div><div class="stat-value" id="j-interviews">0</div></div>
+      <div class="stat"><div class="stat-label">Offers</div><div class="stat-value" id="j-offers">0</div></div>
+    </div>
+    <div class="add-box">
+      <button class="add-toggle" onclick="toggleForm('add-job-form')">
+        <div class="add-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        <div class="add-toggle-text">Log a new application<div class="add-toggle-sub">Add a company you just applied to</div></div>
+      </button>
+      <div class="add-form" id="add-job-form">
+        <div class="form-grid">
+          <div class="field"><label>Company *</label><input type="text" id="j-company" placeholder="Google, Infosys, Stripe..." /></div>
+          <div class="field"><label>Role *</label><input type="text" id="j-role" placeholder="Frontend Engineer, SDE Intern..." /></div>
+          <div class="field"><label>Location</label><input type="text" id="j-location" placeholder="Remote, Bangalore..." /></div>
+          <div class="field"><label>Source</label><input type="text" id="j-source" placeholder="LinkedIn, referral..." /></div>
+          <div class="field"><label>Status</label><select id="j-status"><option value="applied">Applied</option><option value="oa">Online Assessment</option><option value="interview">Interview</option><option value="offer">Offer</option><option value="rejected">Rejected</option><option value="ghosted">Ghosted</option></select></div>
+          <div class="field"><label>Applied on</label><input type="date" id="j-date" /></div>
+          <div class="field full"><label>Job link</label><input type="text" id="j-link" placeholder="https://..." /></div>
+          <div class="field full"><label>Notes</label><textarea id="j-notes" placeholder="Recruiter contact, salary, follow-up..."></textarea></div>
+        </div>
+        <div class="form-actions"><button class="btn btn-ghost" onclick="toggleForm('add-job-form')">Cancel</button><button class="btn btn-primary" onclick="addJob()">Log application</button></div>
+      </div>
+    </div>
+    <div class="toolbar">
+      <button class="filter-btn active" onclick="setJobFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setJobFilter('applied',this)">Applied</button>
+      <button class="filter-btn" onclick="setJobFilter('oa',this)">OA</button>
+      <button class="filter-btn" onclick="setJobFilter('interview',this)">Interview</button>
+      <button class="filter-btn" onclick="setJobFilter('offer',this)">Offers</button>
+      <button class="filter-btn" onclick="setJobFilter('rejected',this)">Rejected</button>
+      <button class="filter-btn" onclick="setJobFilter('ghosted',this)">Ghosted</button>
+      <input class="search" type="text" id="j-search" placeholder="Search..." oninput="renderJobs()" />
+    </div>
+    <div class="grid" id="job-grid"></div>
+  </div>
+
+  <!-- LIBRARY -->
+  <div class="tab-panel" id="tab-library">
+    <div class="lib-intro"><p>A curated collection of learning resources for the most-in-demand tools and skills. Tap any card for official docs, top YouTube channels, courses, and practice platforms.</p></div>
+    <div class="lib-categories" id="lib-categories"></div>
+    <div class="toolbar"><input class="search" type="text" id="lib-search" placeholder="Search tools..." oninput="renderLibrary()" style="margin-left:0;width:100%;max-width:360px;" /></div>
+    <div class="grid" id="lib-grid"></div>
+  </div>
+
+  <!-- PLANS -->
+  <div class="tab-panel" id="tab-plans">
+    <div class="lib-intro"><p>Structured week-long learning plans created by Sage. Each plan has 5 daily targets and a quiz at the end — pass the quiz to boost your topic's progress automatically.</p></div>
+    <div class="empty" id="plans-empty" style="display:none;"><div class="empty-icon">🗓️</div><div class="empty-title">No plans yet</div><div class="empty-sub">Ask Sage: "Plan my week on Git & GitHub" — she'll build a structured plan with daily targets and a quiz.</div></div>
+    <div class="grid" id="plans-grid"></div>
+  </div>
+
+  <!-- BOT -->
+  <div class="tab-panel" id="tab-bot">
+    <div id="bot-setup-screen" style="display:none;"></div>
+    <div id="bot-dashboard" style="display:none;"></div>
+    <div id="bot-loading" style="text-align:center;padding:3rem 1rem;color:var(--text2);">Loading bot status…</div>
+  </div>
+</div>
+
+<div class="lib-modal-overlay" id="lib-modal-overlay" onclick="if(event.target===this)closeLibModal()"><div class="lib-modal" id="lib-modal"></div></div>
+<div class="lib-modal-overlay" id="plan-modal-overlay" onclick="if(event.target===this)closePlanModal()"><div class="lib-modal" id="plan-modal"></div></div>
+
+<button class="sage-fab" onclick="toggleSage()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L3 7l9 5 9-5-9-5z"/><path d="M3 12l9 5 9-5"/><path d="M3 17l9 5 9-5"/></svg></button>
+<div class="sage-panel" id="sage-panel">
+  <div class="sage-header"><div class="sage-avatar">S</div><div class="sage-meta"><div class="sage-name">Sage</div><div class="sage-status">Your AI mentor</div></div><button onclick="clearSageChat()" title="Clear chat history" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:#fca5a5;padding:5px 10px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;margin-right:6px;letter-spacing:0.3px;">🗑️ Clear</button><button class="sage-close" onclick="toggleSage()"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <div class="sage-messages" id="sage-messages"></div>
+  <div class="attach-preview" id="attach-preview"><img id="attach-img" alt="" /><div class="attach-preview-info"><div class="attach-preview-name" id="attach-name">image</div><div>Sage will read this with your message</div></div><button class="attach-remove" onclick="removeAttachment()">✕</button></div>
+  <div class="sage-quick" id="sage-quick"></div>
+  <div class="sage-input-area"><input type="file" id="sage-file" accept="image/*" style="display:none;" onchange="handleFileAttach(event)" /><button class="sage-attach" onclick="document.getElementById('sage-file').click()" title="Attach image"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg></button><input class="sage-input" id="sage-input" type="text" placeholder="Ask Sage anything..." onkeydown="if(event.key==='Enter')sendToSage()" /><button class="sage-send" id="sage-send" onclick="sendToSage()"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
+</div>
+<div id="toast"></div>
+
+<script>
+/* ============ DATA ============ */
+let items = JSON.parse(localStorage.getItem('atlas-items') || '[]');
+let jobs = JSON.parse(localStorage.getItem('atlas-jobs') || '[]');
+let chatHistory = JSON.parse(localStorage.getItem('atlas-chat') || '[]');
+let weekPlans = JSON.parse(localStorage.getItem('atlas-plans') || '[]');
+let activeFilter = 'all', jobFilter = 'all', libCat = 'all', activeTab = 'learning', isThinking = false;
+
+function save() { localStorage.setItem('atlas-items', JSON.stringify(items)); }
+function saveJobs() { localStorage.setItem('atlas-jobs', JSON.stringify(jobs)); }
+function saveChat() { localStorage.setItem('atlas-chat', JSON.stringify(chatHistory)); }
+function savePlans() { localStorage.setItem('atlas-plans', JSON.stringify(weekPlans)); }
+function toast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
+function toggleForm(id) { document.getElementById(id).classList.toggle('open'); }
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function switchTab(t) {
+  activeTab = t;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === t));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'tab-' + t));
+  if (t === 'jobs') renderJobs();
+  else if (t === 'library') renderLibrary();
+  else if (t === 'plans') renderPlans();
+  else if (t === 'bot') renderBotTab();
+  else render();
+}
+
+/* ============ LEARNING ============ */
+function setFilter(f, btn) {
+  activeFilter = f;
+  document.querySelectorAll('#tab-learning .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+function addItem(presetTitle, presetCat) {
+  const title = presetTitle || document.getElementById('f-title').value.trim();
+  if (!title) { document.getElementById('f-title').focus(); return; }
+  const status = presetTitle ? 'todo' : document.getElementById('f-status').value;
+  items.unshift({
+    id: Date.now(), title,
+    category: presetCat || document.getElementById('f-cat').value.trim(),
+    resource: presetTitle ? 'Atlas Library' : document.getElementById('f-resource').value.trim(),
+    status,
+    notes: presetTitle ? '' : document.getElementById('f-notes').value.trim(),
+    progress: status === 'done' ? 100 : 0,
+    created: new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})
+  });
+  save();
+  if (!presetTitle) {
+    ['f-title','f-cat','f-resource','f-notes'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('f-status').value = 'todo';
+    document.getElementById('add-form').classList.remove('open');
+  }
+  render();
+  toast('✨ Added to your Atlas');
+}
+function deleteItem(id) { if (!confirm('Remove?')) return; items=items.filter(i=>i.id!==id); save(); render(); toast('Removed'); }
+function cycleStatus(id) { const c=['todo','in-progress','done','paused']; const i=items.find(x=>x.id===id); if(!i)return; i.status=c[(c.indexOf(i.status)+1)%c.length]; if(i.status==='done')i.progress=100; save(); render(); }
+function nudge(id, d) { const i=items.find(x=>x.id===id); if(i)setProgress(id,i.progress+d); }
+function setProgress(id, val) {
+  const i=items.find(x=>x.id===id); if(!i)return;
+  const v=Math.max(0,Math.min(100,parseInt(val)||0));
+  i.progress=v;
+  if(v===100){i.status='done'; toast('🎉 Mastered!');} else if(v>0&&i.status==='todo')i.status='in-progress';
+  save(); render();
+}
+function barColor(p) { if(p>=100)return'linear-gradient(90deg,#4ade80,#86efac)'; if(p>=66)return'linear-gradient(90deg,#a78bfa,#f0abfc)'; if(p>=33)return'linear-gradient(90deg,#818cf8,#a78bfa)'; return'linear-gradient(90deg,#6366f1,#818cf8)'; }
+function statusBadge(s) { const m={todo:['badge-todo','Not started'],'in-progress':['badge-inprog','◐ In progress'],done:['badge-done','✓ Mastered'],paused:['badge-paused','⏸ Paused']}; const [c,l]=m[s]||['badge-todo',s]; return `<span class="badge ${c}">${l}</span>`; }
+
+function render() {
+  const q=(document.getElementById('search').value||'').toLowerCase();
+  const filtered=items.filter(i=>{const mf=activeFilter==='all'||i.status===activeFilter; const ms=!q||[i.title,i.category,i.resource,i.notes].join(' ').toLowerCase().includes(q); return mf&&ms;});
+  const total=items.length;
+  document.getElementById('s-total').textContent=total;
+  document.getElementById('s-inprog').textContent=items.filter(i=>i.status==='in-progress').length;
+  document.getElementById('s-done').textContent=items.filter(i=>i.status==='done').length;
+  document.getElementById('s-avg').textContent=total?Math.round(items.reduce((s,i)=>s+i.progress,0)/total):0;
+  document.getElementById('count-learning').textContent=total;
+
+  const grid=document.getElementById('grid');
+  if(!filtered.length){grid.innerHTML=`<div class="empty"><div class="empty-icon">${total===0?'🗺️':'🔍'}</div><div class="empty-title">${total===0?'Your Atlas awaits':'Nothing here'}</div><div class="empty-sub">${total===0?'Add your first topic above, or browse the Library tab for ideas.':'Try a different filter.'}</div></div>`; return;}
+
+  grid.innerHTML=filtered.map(item=>`
+    <div class="card">
+      <div class="card-title">${esc(item.title)}</div>
+      <div class="badges">${statusBadge(item.status)}${item.category?`<span class="badge badge-cat">${esc(item.category)}</span>`:''}${item.resource?`<span class="badge badge-resource">${esc(item.resource)}</span>`:''}</div>
+      <div class="progress-section">
+        <div class="progress-header"><span class="label">Progress</span><span class="value">${item.progress}%</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:${item.progress}%;background:${barColor(item.progress)};"></div></div>
+        <div class="progress-controls"><button class="nudge" onclick="nudge(${item.id},-10)">−</button><input class="pct-field" type="number" min="0" max="100" value="${item.progress}" onchange="setProgress(${item.id},this.value)" /><button class="nudge" onclick="nudge(${item.id},10)">+</button><span class="pct-label">%</span></div>
+      </div>
+      ${item.notes?`<div class="card-notes">"${esc(item.notes)}"</div>`:''}
+      <div class="card-footer"><button class="card-btn teach" onclick='askSageAbout(${JSON.stringify(item.title)})'>✦ Ask Sage</button><button class="card-btn" onclick="cycleStatus(${item.id})">⟳ Status</button><button class="card-btn del" onclick="deleteItem(${item.id})">✕</button></div>
+      <div class="card-date">Added ${item.created}</div>
+    </div>`).join('');
+}
+
+/* ============ JOBS ============ */
+function setJobFilter(f, btn) { jobFilter=f; document.querySelectorAll('#tab-jobs .filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); renderJobs(); }
+function addJob() {
+  const company=document.getElementById('j-company').value.trim(), role=document.getElementById('j-role').value.trim();
+  if(!company||!role){(!company?'j-company':'j-role'); document.getElementById(!company?'j-company':'j-role').focus(); return;}
+  const d=document.getElementById('j-date').value;
+  const ad=d?new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  jobs.unshift({id:Date.now(),company,role,location:document.getElementById('j-location').value.trim(),source:document.getElementById('j-source').value.trim(),status:document.getElementById('j-status').value,link:document.getElementById('j-link').value.trim(),notes:document.getElementById('j-notes').value.trim(),appliedDate:ad});
+  saveJobs();
+  ['j-company','j-role','j-location','j-source','j-link','j-notes','j-date'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('j-status').value='applied';
+  document.getElementById('add-job-form').classList.remove('open');
+  renderJobs(); toast('💼 Application logged');
+}
+function deleteJob(id) { if(!confirm('Remove?')) return; jobs=jobs.filter(j=>j.id!==id); saveJobs(); renderJobs(); toast('Removed'); }
+function setJobStatus(id, s) { const j=jobs.find(x=>x.id===id); if(!j)return; j.status=s; saveJobs(); renderJobs(); if(s==='offer')toast('🎉 Congrats on the offer!'); }
+function jobStatusBadge(s) { const m={applied:['badge-applied','📨 Applied'],oa:['badge-oa','📝 OA'],interview:['badge-interview','💬 Interview'],offer:['badge-offer','🎉 Offer'],rejected:['badge-rejected','✕ Rejected'],ghosted:['badge-ghosted','👻 Ghosted']}; const [c,l]=m[s]||['badge-applied',s]; return `<span class="badge ${c}">${l}</span>`; }
+
+function renderJobs() {
+  const q=(document.getElementById('j-search').value||'').toLowerCase();
+  const filtered=jobs.filter(j=>{const mf=jobFilter==='all'||j.status===jobFilter; const ms=!q||[j.company,j.role,j.location,j.source,j.notes].join(' ').toLowerCase().includes(q); return mf&&ms;});
+  const total=jobs.length;
+  document.getElementById('j-total').textContent=total;
+  document.getElementById('j-active').textContent=jobs.filter(j=>['applied','oa','interview'].includes(j.status)).length;
+  document.getElementById('j-interviews').textContent=jobs.filter(j=>j.status==='interview').length;
+  document.getElementById('j-offers').textContent=jobs.filter(j=>j.status==='offer').length;
+  document.getElementById('count-jobs').textContent=total;
+
+  const grid=document.getElementById('job-grid');
+  if(!filtered.length){grid.innerHTML=`<div class="empty"><div class="empty-icon">${total===0?'💼':'🔍'}</div><div class="empty-title">${total===0?'No applications yet':'Nothing here'}</div><div class="empty-sub">${total===0?'Log your first application above.':'Try a different filter.'}</div></div>`; return;}
+
+  grid.innerHTML=filtered.map(job=>`
+    <div class="card">
+      <div class="card-title">${esc(job.company)}</div>
+      <div class="card-sub">${esc(job.role)}${job.location?` · ${esc(job.location)}`:''}</div>
+      <div class="badges">${jobStatusBadge(job.status)}${job.source?`<span class="badge badge-resource">${esc(job.source)}</span>`:''}</div>
+      <div class="job-meta">
+        <div><div class="job-meta-label">Applied</div><div class="job-meta-val">${esc(job.appliedDate)}</div></div>
+        ${job.link?`<div><div class="job-meta-label">Link</div><div class="job-meta-val"><a href="${esc(job.link)}" target="_blank" rel="noopener">Open ↗</a></div></div>`:''}
+      </div>
+      <div style="margin-bottom:10px;"><select onchange="setJobStatus(${job.id},this.value)" style="background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:12px;color:var(--text);cursor:pointer;font-family:inherit;width:100%;">
+        <option value="applied" ${job.status==='applied'?'selected':''}>📨 Applied</option>
+        <option value="oa" ${job.status==='oa'?'selected':''}>📝 Online Assessment</option>
+        <option value="interview" ${job.status==='interview'?'selected':''}>💬 Interview</option>
+        <option value="offer" ${job.status==='offer'?'selected':''}>🎉 Offer</option>
+        <option value="rejected" ${job.status==='rejected'?'selected':''}>✕ Rejected</option>
+        <option value="ghosted" ${job.status==='ghosted'?'selected':''}>👻 Ghosted</option>
+      </select></div>
+      ${job.notes?`<div class="card-notes">"${esc(job.notes)}"</div>`:''}
+      <div class="card-footer"><button class="card-btn teach" onclick='askSageAboutJob(${JSON.stringify(job.company)},${JSON.stringify(job.role)})'>✦ Prep with Sage</button><button class="card-btn del" onclick="deleteJob(${job.id})">✕ Remove</button></div>
+    </div>`).join('');
+}
+
+/* ============ LIBRARY ============ */
+const LIBRARY = [
+  // Languages
+  { id: 'python', icon: '🐍', name: 'Python', category: 'Languages', desc: 'Versatile language for web, data, AI, and automation. Beginner-friendly with massive community.', links: { docs: [{ name: 'Python Official Docs', url: 'https://docs.python.org/3/', desc: 'docs.python.org' },{ name: 'Real Python', url: 'https://realpython.com/', desc: 'realpython.com — tutorials' }], youtube: [{ name: 'Corey Schafer', url: 'https://www.youtube.com/@coreyms', desc: 'Best Python tutorials' },{ name: 'freeCodeCamp Python', url: 'https://www.youtube.com/watch?v=rfscVS0vtbw', desc: 'Full 4-hour course' },{ name: 'Tech With Tim', url: 'https://www.youtube.com/@TechWithTim', desc: 'Projects and Python' }], courses: [{ name: 'CS50P (Harvard)', url: 'https://cs50.harvard.edu/python/', desc: 'Free intro from Harvard' },{ name: 'Automate the Boring Stuff', url: 'https://automatetheboringstuff.com/', desc: 'Free book + practical' }], practice: [{ name: 'LeetCode', url: 'https://leetcode.com/', desc: 'Coding interviews' },{ name: 'HackerRank Python', url: 'https://www.hackerrank.com/domains/python', desc: 'Step-by-step challenges' }] } },
+  { id: 'javascript', icon: '📜', name: 'JavaScript', category: 'Languages', desc: 'The language of the web. Required for any frontend role and essential for full-stack development.', links: { docs: [{ name: 'MDN Web Docs', url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript', desc: 'developer.mozilla.org — the bible' },{ name: 'JavaScript.info', url: 'https://javascript.info/', desc: 'Modern JS tutorial' }], youtube: [{ name: 'Net Ninja', url: 'https://www.youtube.com/@NetNinja', desc: 'Clear, structured tutorials' },{ name: 'Web Dev Simplified', url: 'https://www.youtube.com/@WebDevSimplified', desc: 'Concept-focused JS' },{ name: 'freeCodeCamp', url: 'https://www.youtube.com/watch?v=PkZNo7MFNFg', desc: 'Full course' }], courses: [{ name: 'freeCodeCamp JS Cert', url: 'https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/', desc: 'Free certification' },{ name: 'You Don\'t Know JS', url: 'https://github.com/getify/You-Dont-Know-JS', desc: 'Deep-dive book series' }], practice: [{ name: 'Codewars', url: 'https://www.codewars.com/', desc: 'Daily kata challenges' },{ name: 'JSChallenger', url: 'https://www.jschallenger.com/', desc: 'JS-specific exercises' }] } },
+  { id: 'java', icon: '☕', name: 'Java', category: 'Languages', desc: 'Enterprise standard. Used heavily in Android, backend systems, and most large Indian IT companies.', links: { docs: [{ name: 'Oracle Java Docs', url: 'https://docs.oracle.com/en/java/', desc: 'docs.oracle.com' },{ name: 'Baeldung', url: 'https://www.baeldung.com/', desc: 'baeldung.com — Java tutorials' }], youtube: [{ name: 'Telusko (Navin)', url: 'https://www.youtube.com/@Telusko', desc: 'Popular in India' },{ name: 'Programming with Mosh', url: 'https://www.youtube.com/watch?v=eIrMbAQSU34', desc: 'Java course' },{ name: 'Kunal Kushwaha DSA', url: 'https://www.youtube.com/@KunalKushwaha', desc: 'DSA in Java' }], courses: [{ name: 'Java MOOC (Helsinki)', url: 'https://java-programming.mooc.fi/', desc: 'Free university course' }], practice: [{ name: 'LeetCode Java', url: 'https://leetcode.com/', desc: 'Interview prep' }] } },
+  { id: 'typescript', icon: '🔷', name: 'TypeScript', category: 'Languages', desc: 'JavaScript with types. Modern teams use it everywhere — React, Node, etc.', links: { docs: [{ name: 'TypeScript Handbook', url: 'https://www.typescriptlang.org/docs/handbook/intro.html', desc: 'typescriptlang.org' }], youtube: [{ name: 'Matt Pocock', url: 'https://www.youtube.com/@mattpocockuk', desc: 'TS deep dives' },{ name: 'Fireship TS in 100s', url: 'https://www.youtube.com/watch?v=zQnBQ4tB3ZA', desc: 'Quick overview' }], courses: [{ name: 'Total TypeScript', url: 'https://www.totaltypescript.com/', desc: 'Free beginner tutorial' }], practice: [{ name: 'Type Challenges', url: 'https://github.com/type-challenges/type-challenges', desc: 'Master TS types' }] } },
+  { id: 'sql', icon: '🗄️', name: 'SQL', category: 'Languages', desc: 'Every backend role needs SQL. Asked in nearly every coding interview.', links: { docs: [{ name: 'PostgreSQL Docs', url: 'https://www.postgresql.org/docs/', desc: 'postgresql.org' },{ name: 'SQLBolt', url: 'https://sqlbolt.com/', desc: 'Interactive lessons' }], youtube: [{ name: 'freeCodeCamp SQL', url: 'https://www.youtube.com/watch?v=HXV3zeQKqGY', desc: '4-hour full course' },{ name: 'Programming with Mosh', url: 'https://www.youtube.com/watch?v=7S_tz1z_5bA', desc: 'MySQL course' }], courses: [{ name: 'Mode SQL Tutorial', url: 'https://mode.com/sql-tutorial/', desc: 'Free analyst-focused' }], practice: [{ name: 'StrataScratch', url: 'https://www.stratascratch.com/', desc: 'Real interview SQL' },{ name: 'LeetCode SQL', url: 'https://leetcode.com/problemset/database/', desc: 'Interview problems' }] } },
+
+  // Frontend
+  { id: 'react', icon: '⚛️', name: 'React', category: 'Frontend', desc: 'Most in-demand UI library. Used by Meta, Netflix, Airbnb. A must for modern frontend roles.', links: { docs: [{ name: 'React Official Docs', url: 'https://react.dev/', desc: 'react.dev — the new docs' }], youtube: [{ name: 'Net Ninja React', url: 'https://www.youtube.com/playlist?list=PL4cUxeGkcC9gZD-Tvwfod2gaISzfRiP9d', desc: 'Best free React series' },{ name: 'Jack Herrington', url: 'https://www.youtube.com/@jherr', desc: 'Advanced React patterns' },{ name: 'Codevolution', url: 'https://www.youtube.com/@Codevolution', desc: 'Comprehensive series' }], courses: [{ name: 'Epic React (Kent C. Dodds)', url: 'https://epicreact.dev/', desc: 'Paid, deep dive' },{ name: 'Scrimba React Course', url: 'https://scrimba.com/learn/learnreact', desc: 'Free interactive' }], practice: [{ name: 'Frontend Mentor', url: 'https://www.frontendmentor.io/', desc: 'Real design challenges' }] } },
+  { id: 'nextjs', icon: '▲', name: 'Next.js', category: 'Frontend', desc: 'Production-grade React framework. SSR, routing, deployment built-in. Vercel\'s main product.', links: { docs: [{ name: 'Next.js Docs', url: 'https://nextjs.org/docs', desc: 'nextjs.org' },{ name: 'Next.js Learn', url: 'https://nextjs.org/learn', desc: 'Official tutorial' }], youtube: [{ name: 'Lee Robinson (VP)', url: 'https://www.youtube.com/@leerob', desc: 'From Vercel itself' },{ name: 'Theo - t3.gg', url: 'https://www.youtube.com/@t3dotgg', desc: 'Modern stack opinions' }], courses: [{ name: 'Next.js Foundations', url: 'https://nextjs.org/learn/foundations/about-nextjs', desc: 'Free official course' }], practice: [{ name: 'Build a SaaS clone', url: 'https://github.com/vercel/next.js/tree/canary/examples', desc: 'Official examples' }] } },
+  { id: 'html-css', icon: '🎨', name: 'HTML & CSS', category: 'Frontend', desc: 'The foundation. Strong CSS skills set apart good frontend devs from great ones.', links: { docs: [{ name: 'MDN HTML', url: 'https://developer.mozilla.org/en-US/docs/Web/HTML', desc: 'developer.mozilla.org' },{ name: 'MDN CSS', url: 'https://developer.mozilla.org/en-US/docs/Web/CSS', desc: 'developer.mozilla.org' }], youtube: [{ name: 'Kevin Powell', url: 'https://www.youtube.com/@KevinPowell', desc: 'The CSS master' },{ name: 'Web Dev Simplified', url: 'https://www.youtube.com/@WebDevSimplified', desc: 'CSS concepts' }], courses: [{ name: 'CSS for JS Devs', url: 'https://css-for-js.dev/', desc: 'Paid, popular course' },{ name: 'Flexbox Froggy', url: 'https://flexboxfroggy.com/', desc: 'Free game' },{ name: 'Grid Garden', url: 'https://cssgridgarden.com/', desc: 'CSS grid game' }], practice: [{ name: 'Frontend Mentor', url: 'https://www.frontendmentor.io/', desc: 'Real challenges' },{ name: '100 Days CSS', url: 'https://100dayscss.com/', desc: 'Daily challenges' }] } },
+  { id: 'tailwind', icon: '🌬️', name: 'Tailwind CSS', category: 'Frontend', desc: 'Utility-first CSS. Most modern startups use it. Fast to learn, faster to build with.', links: { docs: [{ name: 'Tailwind Docs', url: 'https://tailwindcss.com/docs', desc: 'tailwindcss.com' }], youtube: [{ name: 'Tailwind Labs Channel', url: 'https://www.youtube.com/@TailwindLabs', desc: 'Official channel' },{ name: 'Net Ninja Tailwind', url: 'https://www.youtube.com/playlist?list=PL4cUxeGkcC9gpXORlEHjc5bgnIi5HEGhw', desc: 'Free playlist' }], courses: [{ name: 'Tailwind UI components', url: 'https://tailwindui.com/components', desc: 'Component library' }], practice: [{ name: 'Tailwind Play', url: 'https://play.tailwindcss.com/', desc: 'Online editor' }] } },
+
+  // Backend
+  { id: 'nodejs', icon: '🟢', name: 'Node.js', category: 'Backend', desc: 'JavaScript on the server. Powers Netflix, LinkedIn, PayPal backends.', links: { docs: [{ name: 'Node.js Docs', url: 'https://nodejs.org/en/docs/', desc: 'nodejs.org' }], youtube: [{ name: 'Net Ninja Node', url: 'https://www.youtube.com/playlist?list=PL4cUxeGkcC9jsz4LDYc6kv3ymONOKxwBU', desc: 'Free full series' },{ name: 'Hitesh Choudhary', url: 'https://www.youtube.com/@chaiaurcode', desc: 'In Hindi/English' }], courses: [{ name: 'Node.js Roadmap', url: 'https://roadmap.sh/nodejs', desc: 'Visual learning path' }], practice: [{ name: 'Build a REST API', url: 'https://github.com/goldbergyoni/nodebestpractices', desc: 'Node best practices' }] } },
+  { id: 'express', icon: '🚂', name: 'Express.js', category: 'Backend', desc: 'Minimalist Node.js web framework. Industry standard for Node APIs.', links: { docs: [{ name: 'Express Docs', url: 'https://expressjs.com/', desc: 'expressjs.com' }], youtube: [{ name: 'Traversy Crash Course', url: 'https://www.youtube.com/watch?v=L72fhGm1tfE', desc: 'Express in 1 hour' }], courses: [{ name: 'MDN Express Tutorial', url: 'https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs', desc: 'Free full tutorial' }], practice: [{ name: 'Build a REST API', url: 'https://www.freecodecamp.org/news/build-a-restful-api-using-node-express-and-mongo/', desc: 'Hands-on guide' }] } },
+  { id: 'springboot', icon: '🍃', name: 'Spring Boot', category: 'Backend', desc: 'Top Java framework. Used by virtually every Indian IT company and fintech.', links: { docs: [{ name: 'Spring Boot Docs', url: 'https://spring.io/projects/spring-boot', desc: 'spring.io' }], youtube: [{ name: 'Telusko', url: 'https://www.youtube.com/@Telusko', desc: 'Hindi/English friendly' },{ name: 'Java Brains', url: 'https://www.youtube.com/@Java.Brains', desc: 'Deep Spring tutorials' }], courses: [{ name: 'Spring Boot Guides', url: 'https://spring.io/guides', desc: 'Official guides' }], practice: [{ name: 'Spring PetClinic', url: 'https://github.com/spring-projects/spring-petclinic', desc: 'Reference project' }] } },
+  { id: 'django', icon: '🎸', name: 'Django', category: 'Backend', desc: 'Python\'s batteries-included framework. Powers Instagram, Pinterest, Mozilla.', links: { docs: [{ name: 'Django Docs', url: 'https://docs.djangoproject.com/', desc: 'djangoproject.com' }], youtube: [{ name: 'Corey Schafer Django', url: 'https://www.youtube.com/playlist?list=PL-osiE80TeTtoQCKZ03TU5fNfx2UY6U4p', desc: 'Best Django series' },{ name: 'Dennis Ivy', url: 'https://www.youtube.com/@DennisIvy', desc: 'Project-based' }], courses: [{ name: 'Django Girls Tutorial', url: 'https://tutorial.djangogirls.org/', desc: 'Free beginner course' }], practice: [{ name: 'Build a blog/portfolio', url: 'https://www.djangoproject.com/start/', desc: 'Official quickstart' }] } },
+  { id: 'fastapi', icon: '⚡', name: 'FastAPI', category: 'Backend', desc: 'Modern Python API framework. Auto-docs, type hints, async-native. Loved by ML teams.', links: { docs: [{ name: 'FastAPI Docs', url: 'https://fastapi.tiangolo.com/', desc: 'fastapi.tiangolo.com — gorgeous docs' }], youtube: [{ name: 'ArjanCodes FastAPI', url: 'https://www.youtube.com/@ArjanCodes', desc: 'Modern Python' },{ name: 'Patrick Loeber', url: 'https://www.youtube.com/@patloeber', desc: 'ML + FastAPI' }], courses: [{ name: 'FastAPI Full Course (FCC)', url: 'https://www.youtube.com/watch?v=0sOvCWFmrtA', desc: 'free, 19h' }], practice: [{ name: 'Build an ML API', url: 'https://fastapi.tiangolo.com/tutorial/', desc: 'Official tutorial' }] } },
+
+  // Database
+  { id: 'mongodb', icon: '🍃', name: 'MongoDB', category: 'Database', desc: 'Popular NoSQL document database. Common in MERN/MEAN stack jobs.', links: { docs: [{ name: 'MongoDB Manual', url: 'https://www.mongodb.com/docs/manual/', desc: 'mongodb.com' }], youtube: [{ name: 'MongoDB Crash Course', url: 'https://www.youtube.com/watch?v=2M_2HvzlH8k', desc: 'Net Ninja' }], courses: [{ name: 'MongoDB University', url: 'https://learn.mongodb.com/', desc: 'Free official courses' }], practice: [{ name: 'MongoDB Atlas Free Tier', url: 'https://www.mongodb.com/cloud/atlas', desc: 'Free cloud DB' }] } },
+  { id: 'postgres', icon: '🐘', name: 'PostgreSQL', category: 'Database', desc: 'Industry-standard relational database. The most loved DB on Stack Overflow surveys.', links: { docs: [{ name: 'PostgreSQL Docs', url: 'https://www.postgresql.org/docs/', desc: 'postgresql.org' }], youtube: [{ name: 'freeCodeCamp Postgres', url: 'https://www.youtube.com/watch?v=qw--VYLpxG4', desc: '4-hour full course' }], courses: [{ name: 'PG Tutor', url: 'https://www.postgresqltutorial.com/', desc: 'Free tutorials' }], practice: [{ name: 'pgexercises', url: 'https://pgexercises.com/', desc: 'Interactive practice' }] } },
+
+  // DevOps
+  { id: 'git', icon: '🌳', name: 'Git & GitHub', category: 'DevOps', desc: 'Non-negotiable. Asked in every interview. Use it daily, master it weekly.', links: { docs: [{ name: 'Pro Git Book', url: 'https://git-scm.com/book/en/v2', desc: 'git-scm.com — free book' }], youtube: [{ name: 'Fireship Git in 100s', url: 'https://www.youtube.com/watch?v=hwP7WQkmECE', desc: 'Quick overview' },{ name: 'Kunal Kushwaha Git', url: 'https://www.youtube.com/watch?v=apGV9Kg7ics', desc: 'Full course in English' }], courses: [{ name: 'Learn Git Branching', url: 'https://learngitbranching.js.org/', desc: 'Best interactive tutorial' }], practice: [{ name: 'Contribute to OSS', url: 'https://github.com/firstcontributions/first-contributions', desc: 'First contributions guide' }] } },
+  { id: 'docker', icon: '🐳', name: 'Docker', category: 'DevOps', desc: 'Containers run modern software. Required for DevOps and most backend roles.', links: { docs: [{ name: 'Docker Docs', url: 'https://docs.docker.com/', desc: 'docs.docker.com' }], youtube: [{ name: 'TechWorld with Nana', url: 'https://www.youtube.com/@TechWorldwithNana', desc: 'Best DevOps channel' },{ name: 'Fireship Docker 100s', url: 'https://www.youtube.com/watch?v=Gjnup-PuquQ', desc: 'Quick intro' }], courses: [{ name: 'Docker Roadmap', url: 'https://roadmap.sh/docker', desc: 'Visual learning path' }], practice: [{ name: 'Play with Docker', url: 'https://labs.play-with-docker.com/', desc: 'Free online playground' }] } },
+  { id: 'aws', icon: '☁️', name: 'AWS', category: 'DevOps', desc: 'Cloud market leader. AWS certifications boost fresher salaries significantly.', links: { docs: [{ name: 'AWS Docs', url: 'https://docs.aws.amazon.com/', desc: 'docs.aws.amazon.com' }], youtube: [{ name: 'AWS Official', url: 'https://www.youtube.com/@amazonwebservices', desc: 'youtube.com/@amazonwebservices' },{ name: 'freeCodeCamp AWS', url: 'https://www.youtube.com/watch?v=SOTamWNgDKc', desc: 'Cloud Practitioner cert' }], courses: [{ name: 'AWS Skill Builder', url: 'https://explore.skillbuilder.aws/', desc: 'Free official courses' }], practice: [{ name: 'AWS Free Tier', url: 'https://aws.amazon.com/free/', desc: '12-month free tier' }] } },
+  { id: 'linux', icon: '🐧', name: 'Linux & Shell', category: 'DevOps', desc: 'Production runs on Linux. Knowing bash/CLI is a quiet superpower for any dev.', links: { docs: [{ name: 'Linux Journey', url: 'https://linuxjourney.com/', desc: 'Interactive lessons' },{ name: 'tldr pages', url: 'https://tldr.sh/', desc: 'Simplified man pages' }], youtube: [{ name: 'NetworkChuck', url: 'https://www.youtube.com/@NetworkChuck', desc: 'Engaging Linux tutorials' }], courses: [{ name: 'MIT Missing Semester', url: 'https://missing.csail.mit.edu/', desc: 'Free, essential CLI skills' }], practice: [{ name: 'OverTheWire Bandit', url: 'https://overthewire.org/wargames/bandit/', desc: 'Learn Linux via games' }] } },
+
+  // AI/ML
+  { id: 'ml', icon: '🤖', name: 'Machine Learning', category: 'AI/ML', desc: 'Hottest field for freshers in 2025-26. Math + Python + intuition.', links: { docs: [{ name: 'scikit-learn Docs', url: 'https://scikit-learn.org/stable/', desc: 'scikit-learn.org' }], youtube: [{ name: '3Blue1Brown Neural Nets', url: 'https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi', desc: 'Beautiful math intuition' },{ name: 'StatQuest', url: 'https://www.youtube.com/@statquest', desc: 'Stats made simple' },{ name: 'Krish Naik', url: 'https://www.youtube.com/@krishnaik06', desc: 'Hindi-friendly ML' }], courses: [{ name: 'Andrew Ng ML (Coursera)', url: 'https://www.coursera.org/specializations/machine-learning-introduction', desc: 'The classic, free audit' },{ name: 'fast.ai', url: 'https://course.fast.ai/', desc: 'Practical deep learning' }], practice: [{ name: 'Kaggle', url: 'https://www.kaggle.com/learn', desc: 'Free micro-courses + competitions' }] } },
+  { id: 'genai', icon: '✨', name: 'Generative AI & LLMs', category: 'AI/ML', desc: 'LLMs, prompt engineering, RAG, agents. The most-hired skill of 2026.', links: { docs: [{ name: 'Anthropic Docs', url: 'https://docs.anthropic.com/', desc: 'docs.anthropic.com' },{ name: 'OpenAI Cookbook', url: 'https://cookbook.openai.com/', desc: 'cookbook.openai.com' }], youtube: [{ name: 'Andrej Karpathy', url: 'https://www.youtube.com/@AndrejKarpathy', desc: 'Build LLMs from scratch' },{ name: 'AI Jason', url: 'https://www.youtube.com/@AIJasonZ', desc: 'GenAI app projects' }], courses: [{ name: 'DeepLearning.AI short courses', url: 'https://www.deeplearning.ai/short-courses/', desc: 'Free GenAI courses' },{ name: 'Prompt Engineering Guide', url: 'https://www.promptingguide.ai/', desc: 'promptingguide.ai' }], practice: [{ name: 'Build with Claude API', url: 'https://docs.anthropic.com/en/docs/build-with-claude', desc: 'Build apps' }] } },
+
+  // CS Fundamentals
+  { id: 'dsa', icon: '🧩', name: 'DSA', category: 'CS Fundamentals', desc: 'Asked in every interview. The single highest-ROI investment for fresher placements.', links: { docs: [{ name: 'NeetCode Roadmap', url: 'https://neetcode.io/roadmap', desc: 'Clearest learning plan' }, { name: 'GeeksforGeeks DSA', url: 'https://www.geeksforgeeks.org/data-structures/', desc: 'India reference' }], youtube: [{ name: 'NeetCode', url: 'https://www.youtube.com/@NeetCode', desc: 'Best LeetCode explanations' }, { name: 'Striver (takeUforward)', url: 'https://www.youtube.com/@takeUforward', desc: 'Top channel in India' }, { name: 'Abdul Bari', url: 'https://www.youtube.com/@abdul_bari', desc: 'Algorithms deep-dive' }], courses: [{ name: 'Striver A2Z DSA Sheet', url: 'https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/', desc: 'The top sheet for placements' }, { name: 'NeetCode 150', url: 'https://neetcode.io/practice', desc: 'Curated 150 problems' }], practice: [{ name: 'LeetCode', url: 'https://leetcode.com/', desc: 'The main platform' }, { name: 'Codeforces', url: 'https://codeforces.com/', desc: 'Competitive programming' }] } },
+  { id: 'systemdesign', icon: '🏗️', name: 'System Design', category: 'CS Fundamentals', desc: 'Increasingly asked even to freshers at top companies. Critical for SDE-2+.', links: { docs: [{ name: 'System Design Primer', url: 'https://github.com/donnemartin/system-design-primer', desc: 'Top GitHub repo' }], youtube: [{ name: 'Gaurav Sen', url: 'https://www.youtube.com/@gkcs', desc: 'Best Indian channel' }, { name: 'ByteByteGo', url: 'https://www.youtube.com/@ByteByteGo', desc: 'Animated explainers' }, { name: 'Tech Dummies', url: 'https://www.youtube.com/@TechDummiesNarendraL', desc: 'Real architectures' }], courses: [{ name: 'Educative Grokking SD', url: 'https://www.educative.io/courses/grokking-the-system-design-interview', desc: 'Popular interview prep' }, { name: 'High Scalability', url: 'http://highscalability.com/', desc: 'Real-world cases' }], practice: [{ name: 'Excalidraw', url: 'https://excalidraw.com/', desc: 'Draw architectures' }] } },
+  { id: 'os', icon: '⚙️', name: 'Operating Systems', category: 'CS Fundamentals', desc: 'Heavy in MNC interviews. Threads, processes, memory, scheduling.', links: { docs: [{ name: 'OSTEP (free book)', url: 'https://pages.cs.wisc.edu/~remzi/OSTEP/', desc: 'The OS bible' }], youtube: [{ name: 'Knowledge Gate', url: 'https://www.youtube.com/@KnowledgeGateSanchitSir', desc: 'GATE-style OS' }, { name: 'Neso Academy', url: 'https://www.youtube.com/@nesoacademy', desc: 'Clear lectures' }], courses: [{ name: 'Gate Smashers OS', url: 'https://www.youtube.com/playlist?list=PLxCzCOWd7aiGz9donHRrE9I3Mwn6XdP8p', desc: 'Free playlist' }] } },
+  { id: 'reactnative', icon: '📱', name: 'React Native', category: 'Mobile', desc: 'Build iOS + Android with one codebase. Used at Discord, Coinbase, Shopify.', links: { docs: [{ name: 'React Native Docs', url: 'https://reactnative.dev/docs/getting-started', desc: 'reactnative.dev' }, { name: 'Expo Docs', url: 'https://docs.expo.dev/', desc: 'Easiest way to start' }], youtube: [{ name: 'Net Ninja RN', url: 'https://www.youtube.com/playlist?list=PL4cUxeGkcC9ixPU-QkScoRBVxtPPzVjrQ', desc: 'Free playlist' }, { name: 'Notjust.dev', url: 'https://www.youtube.com/@notjustdev', desc: 'Clone projects' }] } },
+  { id: 'flutter', icon: '💙', name: 'Flutter', category: 'Mobile', desc: 'Google\'s cross-platform framework. Beautiful UIs, growing fast in India.', links: { docs: [{ name: 'Flutter Docs', url: 'https://docs.flutter.dev/', desc: 'docs.flutter.dev' }], youtube: [{ name: 'Flutter Mapp', url: 'https://www.youtube.com/@FlutterMapp', desc: 'Project tutorials' }, { name: 'Resocoder', url: 'https://www.youtube.com/@resocoder', desc: 'Architecture deep dives' }], courses: [{ name: 'Flutter Codelabs', url: 'https://docs.flutter.dev/codelabs', desc: 'Official guided projects' }] } },
+];
+
+const CATEGORIES = ['All', 'Languages', 'Frontend', 'Backend', 'Database', 'DevOps', 'AI/ML', 'CS Fundamentals', 'Mobile'];
+
+function renderLibCategories() {
+  document.getElementById('lib-categories').innerHTML = CATEGORIES.map(c => {
+    const key = c === 'All' ? 'all' : c;
+    return `<button class="filter-btn ${libCat===key?'active':''}" onclick="setLibCat('${esc(key)}',this)">${esc(c)}</button>`;
+  }).join('');
+}
+function setLibCat(c, btn) {
+  libCat = c;
+  document.querySelectorAll('#lib-categories .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderLibrary();
+}
+
+function renderLibrary() {
+  renderLibCategories();
+  const q = (document.getElementById('lib-search').value || '').toLowerCase();
+  const filtered = LIBRARY.filter(t => {
+    const mc = libCat === 'all' || t.category === libCat;
+    const ms = !q || [t.name, t.category, t.desc].join(' ').toLowerCase().includes(q);
+    return mc && ms;
+  });
+  const grid = document.getElementById('lib-grid');
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-title">Nothing matches</div><div class="empty-sub">Try a different category or search.</div></div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map(t => {
+    const total = Object.values(t.links).reduce((s, arr) => s + (arr ? arr.length : 0), 0);
+    return `<div class="lib-card" onclick="openLibModal('${esc(t.id)}')">
+      <div class="lib-card-top">
+        <div class="lib-icon">${t.icon}</div>
+        <div><div class="lib-card-title">${esc(t.name)}</div><div class="lib-card-cat">${esc(t.category)}</div></div>
+      </div>
+      <div class="lib-card-desc">${esc(t.desc)}</div>
+      <div class="lib-card-meta"><span>${total} resources</span><span>Tap to explore →</span></div>
+    </div>`;
+  }).join('');
+}
+
+function openLibModal(id) {
+  const t = LIBRARY.find(x => x.id === id);
+  if (!t) return;
+  const sectionOf = (label, icon, arr) => arr && arr.length ? `
+    <div class="lib-section">
+      <div class="lib-section-title">${icon} ${label}</div>
+      ${arr.map(l => `
+        <a href="${esc(l.url)}" target="_blank" rel="noopener" class="lib-link">
+          <div class="lib-link-icon">${icon}</div>
+          <div class="lib-link-text"><div class="lib-link-name">${esc(l.name)}</div><div class="lib-link-desc">${esc(l.desc)}</div></div>
+          <svg class="lib-link-arrow" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M7 17l10-10M17 17V7H7"/></svg>
+        </a>`).join('')}
+    </div>` : '';
+  document.getElementById('lib-modal').innerHTML = `
+    <div class="lib-modal-header">
+      <div class="lib-modal-icon">${t.icon}</div>
+      <div class="lib-modal-title-block"><div class="lib-modal-title">${esc(t.name)}</div><div class="lib-modal-sub">${esc(t.desc)}</div></div>
+      <button class="lib-modal-close" onclick="closeLibModal()"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="lib-modal-body">
+      ${sectionOf('Official Docs', '📚', t.links.docs)}
+      ${sectionOf('YouTube Channels', '▶️', t.links.youtube)}
+      ${sectionOf('Courses & Books', '🎓', t.links.courses)}
+      ${sectionOf('Practice', '💪', t.links.practice)}
+      <div class="lib-add-tracker">
+        <div class="lib-add-tracker-text">Want to learn this? Add it to your tracker.</div>
+        <button onclick='addFromLibrary(${JSON.stringify(t.name)},${JSON.stringify(t.category)})'>+ Add to Learning</button>
+      </div>
+    </div>`;
+  document.getElementById('lib-modal-overlay').classList.add('open');
+}
+function closeLibModal() { document.getElementById('lib-modal-overlay').classList.remove('open'); }
+
+function addFromLibrary(name, cat) {
+  if (items.some(i => i.title.toLowerCase() === name.toLowerCase())) {
+    toast(`"${name}" is already in your Learning tab`);
+    return;
+  }
+  addItem(name, cat);
+  closeLibModal();
+  setTimeout(() => switchTab('learning'), 250);
+}
+
+/* ============ WEEK PLANS ============ */
+function renderPlans() {
+  const count = weekPlans.length;
+  document.getElementById('count-plans').textContent = count;
+  const grid = document.getElementById('plans-grid');
+  const empty = document.getElementById('plans-empty');
+  if (!count) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  // Group by topic
+  const byTopic = {};
+  weekPlans.forEach(p => {
+    const key = p.topicTitle.toLowerCase();
+    if (!byTopic[key]) byTopic[key] = { title: p.topicTitle, plans: [] };
+    byTopic[key].plans.push(p);
+  });
+
+  // Sort plans within each topic by week number (or creation order as fallback)
+  Object.values(byTopic).forEach(g => {
+    g.plans.sort((a, b) => (a.weekNumber || 0) - (b.weekNumber || 0));
+  });
+
+  grid.style.display = 'block';
+  grid.innerHTML = Object.values(byTopic).map(group => {
+    const totalBoost = group.plans.reduce((s, p) => s + p.progressBoost, 0);
+    const earnedBoost = group.plans.filter(p => p.quiz.passed).reduce((s, p) => s + p.progressBoost, 0);
+    const topic = items.find(i => i.title.toLowerCase() === group.title.toLowerCase());
+    return `
+      <div style="margin-bottom:2rem;">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px;padding:0 4px;">
+          <div>
+            <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:500;color:var(--text);letter-spacing:-0.3px;">${esc(group.title)}</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:2px;">${group.plans.length} week${group.plans.length>1?'s':''} · ${earnedBoost}/${totalBoost}% earned${topic ? ` · Topic progress: ${topic.progress}%` : ''}</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;">
+          ${group.plans.map(p => {
+            const daysDone = (p.days || []).filter(d => d.done).length;
+            const dayPct = p.days.length ? Math.round((daysDone / p.days.length) * 100) : 0;
+            const quizStatus = p.quiz.passed ? '✓ Passed' : (p.quiz.attempts >= p.quiz.maxAttempts ? `✕ Locked` : `${p.quiz.attempts}/${p.quiz.maxAttempts} tried`);
+            return `
+              <div class="plan-card" onclick="openPlanModal('${p.id}')">
+                <div class="plan-card-title" style="font-size:18px;">${esc(p.title)}</div>
+                <div class="plan-card-sub">Worth +${p.progressBoost}%</div>
+                <div class="plan-card-progress">
+                  <div class="plan-card-progress-bar"><div class="plan-card-progress-fill" style="width:${dayPct}%;"></div></div>
+                  <div class="plan-card-progress-text">${daysDone}/${p.days.length}</div>
+                </div>
+                <div class="plan-card-meta">
+                  <span>🎯 <strong>${p.days.length}</strong> days</span>
+                  <span>📝 <strong>${quizStatus}</strong></span>
+                </div>
+              </div>`;
+          }).join('')}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function openPlanModal(planId) {
+  const p = weekPlans.find(x => x.id == planId);
+  if (!p) return;
+  const daysDone = p.days.filter(d => d.done).length;
+  const allDaysDone = daysDone === p.days.length;
+  const quizUsedUp = p.quiz.attempts >= p.quiz.maxAttempts;
+  const quizPassed = p.quiz.passed;
+
+  let quizHTML = '';
+  if (quizPassed) {
+    quizHTML = `
+      <div class="quiz-section">
+        <div class="quiz-header">
+          <div class="quiz-icon">✓</div>
+          <div><div class="quiz-title">Quiz passed!</div><div class="quiz-meta">Best score: ${p.quiz.bestScore}/${p.quiz.questions.length} · +${p.progressBoost}% added to ${esc(p.topicTitle)}</div></div>
+        </div>
+        <div style="font-size:12px;color:var(--text2);text-align:center;padding:8px;">Want to review the answers? <button class="btn btn-ghost" style="padding:6px 12px;font-size:12px;margin-left:6px;" onclick="reviewQuiz('${p.id}')">Show questions</button></div>
+      </div>`;
+  } else if (!allDaysDone) {
+    quizHTML = `
+      <div class="quiz-section">
+        <div class="quiz-header">
+          <div class="quiz-icon">🔒</div>
+          <div><div class="quiz-title">Quiz locked</div><div class="quiz-meta">Complete all 5 daily targets to unlock</div></div>
+        </div>
+      </div>`;
+  } else if (quizUsedUp) {
+    quizHTML = `
+      <div class="quiz-section">
+        <div class="quiz-header">
+          <div class="quiz-icon">📝</div>
+          <div><div class="quiz-title">Quiz attempts used up</div><div class="quiz-meta">Best: ${p.quiz.bestScore}/${p.quiz.questions.length} — no progress boost applied. <button class="btn btn-ghost" style="padding:4px 10px;font-size:11px;margin-left:6px;" onclick="reviewQuiz('${p.id}')">Review answers</button></div></div>
+        </div>
+      </div>`;
+  } else {
+    quizHTML = `
+      <div class="quiz-section" id="quiz-section-${p.id}">
+        <div class="quiz-header">
+          <div class="quiz-icon">📝</div>
+          <div><div class="quiz-title">Final quiz</div><div class="quiz-meta">${p.quiz.questions.length} questions · ${p.quiz.attempts}/${p.quiz.maxAttempts} attempts used · Need ≥70% to pass</div></div>
+        </div>
+        <div id="quiz-questions-${p.id}" style="display:none;">
+          ${p.quiz.questions.map((q, qi) => `
+            <div class="quiz-question">
+              <div class="quiz-q-text"><span class="quiz-q-num">Q${qi+1}.</span>${esc(q.question)}</div>
+              ${q.options.map((opt, oi) => `
+                <label class="quiz-option" onclick="selectQuizOption('${p.id}',${qi},${oi},this)">
+                  <input type="radio" name="quiz-${p.id}-${qi}" value="${oi}" />
+                  <span>${esc(opt)}</span>
+                </label>`).join('')}
+            </div>`).join('')}
+          <div style="display:flex;gap:8px;margin-top:14px;">
+            <button class="btn btn-primary" onclick="submitQuiz('${p.id}')">Submit Quiz</button>
+            <button class="btn btn-ghost" onclick="document.getElementById('quiz-questions-${p.id}').style.display='none';document.getElementById('start-quiz-${p.id}').style.display='block';">Cancel</button>
+          </div>
+          <div id="quiz-result-${p.id}"></div>
+        </div>
+        <div id="start-quiz-${p.id}" style="text-align:center;padding:8px 0;">
+          <button class="btn btn-primary" onclick="document.getElementById('quiz-questions-${p.id}').style.display='block';this.parentElement.style.display='none';">Start Quiz</button>
+        </div>
+      </div>`;
+  }
+
+  document.getElementById('plan-modal').innerHTML = `
+    <div class="lib-modal-header">
+      <div class="lib-modal-icon">🗓️</div>
+      <div class="lib-modal-title-block">
+        <div class="lib-modal-title">${esc(p.title)}</div>
+        <div class="lib-modal-sub">${esc(p.topicTitle)} · ${daysDone}/${p.days.length} days · Quiz worth +${p.progressBoost}%</div>
+      </div>
+      <button class="lib-modal-close" onclick="closePlanModal()"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="lib-modal-body">
+      <div class="lib-section">
+        <div class="lib-section-title">🎯 Daily Targets</div>
+        ${p.days.map((d, i) => `
+          <div class="plan-day ${d.done?'done':''}">
+            <div class="plan-day-num">${i+1}</div>
+            <div class="plan-day-body">
+              <div class="plan-day-title">${esc(d.title)}</div>
+              <div class="plan-day-target">${esc(d.target)}</div>
+            </div>
+            <button class="plan-day-check ${d.done?'checked':''}" onclick="toggleDay('${p.id}',${i})" title="${d.done?'Mark not done':'Mark done'}">
+              <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+          </div>`).join('')}
+      </div>
+      ${quizHTML}
+      <div style="display:flex;gap:8px;margin-top:18px;">
+        <button class="btn btn-ghost" style="flex:1;" onclick="deletePlan('${p.id}')">✕ Delete plan</button>
+      </div>
+    </div>`;
+  document.getElementById('plan-modal-overlay').classList.add('open');
+}
+function closePlanModal() { document.getElementById('plan-modal-overlay').classList.remove('open'); }
+
+function toggleDay(planId, dayIdx) {
+  const p = weekPlans.find(x => x.id == planId);
+  if (!p) return;
+  p.days[dayIdx].done = !p.days[dayIdx].done;
+  savePlans();
+  openPlanModal(planId); // refresh
+  renderPlans();
+}
+
+let currentQuizAnswers = {};
+function selectQuizOption(planId, qi, oi, el) {
+  if (!currentQuizAnswers[planId]) currentQuizAnswers[planId] = {};
+  currentQuizAnswers[planId][qi] = oi;
+  // Deselect siblings
+  const all = el.parentElement.querySelectorAll('.quiz-option');
+  all.forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  // Select radio
+  const radio = el.querySelector('input[type=radio]');
+  if (radio) radio.checked = true;
+}
+
+function submitQuiz(planId) {
+  const p = weekPlans.find(x => x.id == planId);
+  if (!p) return;
+  const answers = currentQuizAnswers[planId] || {};
+  if (Object.keys(answers).length < p.quiz.questions.length) {
+    toast('Please answer all questions');
+    return;
+  }
+  let correct = 0;
+  p.quiz.questions.forEach((q, qi) => { if (answers[qi] === q.correct) correct++; });
+  const total = p.quiz.questions.length;
+  const pct = Math.round((correct / total) * 100);
+  const passed = pct >= 70;
+  p.quiz.attempts++;
+  if (correct > p.quiz.bestScore) p.quiz.bestScore = correct;
+
+  // Show inline feedback on options
+  const sectionRoot = document.getElementById(`quiz-questions-${planId}`);
+  if (sectionRoot) {
+    p.quiz.questions.forEach((q, qi) => {
+      const userAns = answers[qi];
+      const opts = sectionRoot.querySelectorAll(`input[name="quiz-${planId}-${qi}"]`);
+      opts.forEach((radio, oi) => {
+        const label = radio.closest('.quiz-option');
+        if (oi === q.correct) label.classList.add('correct');
+        else if (oi === userAns) label.classList.add('incorrect');
+      });
+    });
+  }
+
+  if (passed && !p.quiz.boostApplied) {
+    p.quiz.passed = true;
+    p.quiz.boostApplied = true;
+    // Apply progress boost to matching topic
+    const topic = items.find(i => i.title.toLowerCase() === p.topicTitle.toLowerCase());
+    if (topic) {
+      topic.progress = Math.min(100, topic.progress + p.progressBoost);
+      if (topic.progress === 100) topic.status = 'done';
+      else if (topic.status === 'todo') topic.status = 'in-progress';
+      save();
+    }
+  }
+  savePlans();
+
+  const resultBox = document.getElementById(`quiz-result-${planId}`);
+  if (resultBox) {
+    if (passed) {
+      resultBox.innerHTML = `<div class="quiz-result passed"><div class="quiz-result-score">${correct}/${total} ✓</div><div class="quiz-result-text">Passed! <strong style="color:#86efac;">+${p.progressBoost}% added to ${esc(p.topicTitle)}</strong></div></div>`;
+      toast(`🎉 Passed! +${p.progressBoost}% progress`);
+    } else if (p.quiz.attempts >= p.quiz.maxAttempts) {
+      resultBox.innerHTML = `<div class="quiz-result failed"><div class="quiz-result-score">${correct}/${total}</div><div class="quiz-result-text">Out of attempts (need ${Math.ceil(0.7*total)}/${total} to pass). Best: ${p.quiz.bestScore}/${total}</div></div>`;
+    } else {
+      const remaining = p.quiz.maxAttempts - p.quiz.attempts;
+      resultBox.innerHTML = `<div class="quiz-result failed"><div class="quiz-result-score">${correct}/${total}</div><div class="quiz-result-text">Need ${Math.ceil(0.7*total)}/${total} to pass. <strong>${remaining}</strong> attempt${remaining!==1?'s':''} left. <button class="btn btn-ghost" style="padding:6px 14px;font-size:12px;margin-left:6px;" onclick="retryQuiz('${planId}')">Retry</button></div></div>`;
+    }
+  }
+  delete currentQuizAnswers[planId];
+  render();
+  renderPlans();
+}
+
+function retryQuiz(planId) {
+  currentQuizAnswers[planId] = {};
+  openPlanModal(planId);
+}
+
+function reviewQuiz(planId) {
+  const p = weekPlans.find(x => x.id == planId);
+  if (!p) return;
+  const html = `
+    <div class="lib-modal-header">
+      <div class="lib-modal-icon">📝</div>
+      <div class="lib-modal-title-block">
+        <div class="lib-modal-title">Quiz Review</div>
+        <div class="lib-modal-sub">${esc(p.title)} · Best: ${p.quiz.bestScore}/${p.quiz.questions.length}</div>
+      </div>
+      <button class="lib-modal-close" onclick="openPlanModal('${p.id}')"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="lib-modal-body">
+      ${p.quiz.questions.map((q, qi) => `
+        <div class="quiz-question">
+          <div class="quiz-q-text"><span class="quiz-q-num">Q${qi+1}.</span>${esc(q.question)}</div>
+          ${q.options.map((opt, oi) => `<div class="quiz-option ${oi === q.correct ? 'correct' : ''}"><span>${esc(opt)}</span>${oi === q.correct ? '<span style="margin-left:auto;font-size:11px;font-weight:600;">✓ CORRECT</span>' : ''}</div>`).join('')}
+        </div>`).join('')}
+    </div>`;
+  document.getElementById('plan-modal').innerHTML = html;
+}
+
+function deletePlan(planId) {
+  if (!confirm('Delete this plan? Progress already applied to the topic stays.')) return;
+  weekPlans = weekPlans.filter(p => p.id != planId);
+  savePlans();
+  closePlanModal();
+  renderPlans();
+  toast('Plan removed');
+}
+/* ============ SAGE ============ */
+const SAGE_SYSTEM = `You are Sage, a warm, encouraging, knowledgeable AI mentor inside "Atlas" — a personal learning + career tracker for a fresher (recent grad / early-career).
+
+YOUR CAPABILITIES:
+1. **Vision** — when the user uploads an image (usually a job description screenshot), read it carefully and extract: company, role, location, key requirements, skills wanted.
+2. **Tools** — you can directly add things to the user's Atlas:
+   - \`add_job_application\` — log a job to the Jobs tab (always set status="applied" by default unless user says otherwise)
+   - \`add_learning_topics\` — add one or more topics to the Learning tab
+   - \`create_week_plan\` — build ONE 5-day learning plan. Use only when user explicitly asks for one week.
+   - \`create_curriculum\` — build a COMPLETE multi-week curriculum (2-16 weeks). Use this when user says "plan my learning for X", "plan the whole thing", "how long to learn X", or generally wants a full roadmap. Decide week count intelligently based on topic depth.
+
+YOUR ROLES:
+1. **Cover letter writer** — when given a job description (image or text), write a 3-paragraph (~200 word) personalized cover letter using the user's actual skills from their Learning tab. Make it specific, not generic. End with [Your Name] as placeholder. After writing it, OFFER to add the job to their Jobs tab using add_job_application — never call the tool silently, always tell them what you're about to do first.
+2. **Learning planner** — when the user wants to learn something, suggest a focused plan, then OFFER to add. For loose topic discovery (3-7 topics) use add_learning_topics. When user wants a structured study plan for ONE topic, use \`create_curriculum\` for a full multi-week roadmap (recommended default) or \`create_week_plan\` only for a single week. Ensure the topic exists in Learning first (use add_learning_topics if needed before the plan). For curricula, scale week count to topic depth: Git ~3 weeks, React ~5 weeks, DSA ~10 weeks. Boosts across all weeks MUST sum to 100.
+3. **Teacher** — explain concepts, quiz them, suggest learning paths.
+4. **Career mentor** — interview prep, resume advice, mock questions, handling rejection.
+
+PERSONALITY: Patient, supportive, concise (2-5 short paragraphs max), simple vivid explanations, ask follow-ups, celebrate progress, light formatting (**bold**, \`code\`), max 1-2 emoji per response.
+
+CRITICAL RULES:
+- Always show cover letters/plans in the chat first. THEN ask permission before using a tool.
+- When user agrees (e.g. "yes", "add it", "go ahead"), use the tool.
+- Personalize using the user's Atlas context (learning topics, prior applications, notes) — it's passed to you in each message.
+- For learning plans, only suggest topics that actually exist or make sense as a single tracker entry (don't try to add 20 things; pick 3-7 meaningful ones).
+- **TOOL CALLING**: Use the API's native tool_use mechanism only. NEVER write XML tags like \`<function_calls>\`, \`<invoke>\`, \`<parameter>\` in your text response — those will appear as raw text to the user and the tool will not execute. Only structured tool_use blocks work.
+- **CURRICULUM SIZE LIMIT**: For very large topics needing >8 weeks (like full DSA or ML), do NOT try to create all weeks at once — the response will be truncated and fail. Instead, create the FIRST 6-8 weeks (with progress_boost summing to whatever portion of 100 those weeks represent — e.g., 6 of 12 weeks = 50%), then in your text response tell the user: "I've added the first 6 weeks. After you finish these, ask me to plan the next batch." This way the user gets results that actually save.`;
+
+const SAGE_TOOLS = [
+  {
+    name: "add_job_application",
+    description: "Add a new job application to the user's Jobs tab. Use this ONLY after the user explicitly agrees to add a job.",
+    input_schema: {
+      type: "object",
+      properties: {
+        company: { type: "string", description: "Company name" },
+        role: { type: "string", description: "Job title / role" },
+        location: { type: "string", description: "Location, or 'Remote'. Empty string if unknown." },
+        source: { type: "string", description: "How found (LinkedIn, careers page, referral, etc.). Empty if unknown." },
+        status: { type: "string", enum: ["applied","oa","interview","offer","rejected","ghosted"], description: "Default 'applied'." },
+        link: { type: "string", description: "Job posting URL if known, else empty string." },
+        notes: { type: "string", description: "Key requirements, skills mentioned, salary, anything useful for prep." }
+      },
+      required: ["company", "role"]
+    }
+  },
+  {
+    name: "add_learning_topics",
+    description: "Add one or more topics to the user's Learning tab. Use ONLY after the user explicitly agrees.",
+    input_schema: {
+      type: "object",
+      properties: {
+        topics: {
+          type: "array",
+          description: "List of topics to add (3-7 items typical).",
+          items: {
+            type: "object",
+            properties: {
+              title: { type: "string", description: "Topic name, e.g. 'React Hooks'" },
+              category: { type: "string", description: "Category, e.g. 'Frontend', 'DSA'" },
+              resource: { type: "string", description: "Suggested resource, e.g. 'freeCodeCamp', empty if none" },
+              notes: { type: "string", description: "Why this matters, what to focus on. Brief." }
+            },
+            required: ["title"]
+          }
+        }
+      },
+      required: ["topics"]
+    }
+  },
+  {
+    name: "create_week_plan",
+    description: "Create a SINGLE 5-day learning plan with a final quiz for a topic. Use this only when the user explicitly asks for just ONE week. For a full multi-week curriculum, use create_curriculum instead.",
+    input_schema: {
+      type: "object",
+      properties: {
+        topic_title: { type: "string", description: "The learning topic this plan is for, e.g. 'Git & GitHub'. Match an existing topic if possible." },
+        week_title: { type: "string", description: "Display title, e.g. 'Git & GitHub — Week 1'" },
+        days: {
+          type: "array",
+          description: "Exactly 5 daily targets, progressing from beginner to advanced.",
+          items: {
+            type: "object",
+            properties: {
+              title: { type: "string", description: "Short title for the day, e.g. 'Day 1: Setup & basics'" },
+              target: { type: "string", description: "1-2 sentence description of what to learn/do that day" }
+            },
+            required: ["title", "target"]
+          }
+        },
+        quiz: {
+          type: "array",
+          description: "Exactly 5 multiple-choice questions covering the week's content.",
+          items: {
+            type: "object",
+            properties: {
+              question: { type: "string", description: "Question text" },
+              options: { type: "array", description: "Exactly 4 answer options", items: { type: "string" } },
+              correct: { type: "integer", description: "Index of correct option (0-3)", minimum: 0, maximum: 3 }
+            },
+            required: ["question", "options", "correct"]
+          }
+        },
+        progress_boost: { type: "integer", description: "Progress percentage to add to the topic when quiz is passed. Usually 10-25 depending on how much of the topic this week covers.", minimum: 5, maximum: 50 }
+      },
+      required: ["topic_title", "week_title", "days", "quiz", "progress_boost"]
+    }
+  },
+  {
+    name: "create_curriculum",
+    description: "Create a COMPLETE multi-week learning curriculum. Use when user wants a full roadmap for one topic. Recommended: 3-8 weeks total (small topics like Git: 3, medium like React: 5, larger topics: 6-8). For very large topics (DSA, ML) suggest the first 6-8 weeks then offer to continue. Each week has 5 daily targets and a 3-question quiz. ALL weeks' progress_boost values MUST sum to exactly 100.",
+    input_schema: {
+      type: "object",
+      properties: {
+        topic_title: { type: "string" },
+        total_weeks: { type: "integer", minimum: 2, maximum: 12 },
+        weeks: {
+          type: "array",
+          description: "All weeks. Length must equal total_weeks.",
+          items: {
+            type: "object",
+            properties: {
+              week_title: { type: "string", description: "e.g. 'Git Basics' (just the topic, not 'Week 1')" },
+              days: {
+                type: "array",
+                description: "Exactly 5 days",
+                items: {
+                  type: "object",
+                  properties: {
+                    title: { type: "string", description: "Short day topic" },
+                    target: { type: "string", description: "1 sentence: what to do" }
+                  },
+                  required: ["title", "target"]
+                }
+              },
+              quiz: {
+                type: "array",
+                description: "Exactly 3 MCQs",
+                items: {
+                  type: "object",
+                  properties: {
+                    question: { type: "string" },
+                    options: { type: "array", items: { type: "string" } },
+                    correct: { type: "integer", minimum: 0, maximum: 3 }
+                  },
+                  required: ["question", "options", "correct"]
+                }
+              },
+              progress_boost: { type: "integer", minimum: 5, maximum: 50 }
+            },
+            required: ["week_title", "days", "quiz", "progress_boost"]
+          }
+        }
+      },
+      required: ["topic_title", "total_weeks", "weeks"]
+    }
+  }
+];
+
+let attachedImage = null; // { data: base64, mediaType: 'image/jpeg', name: 'foo.png' }
+
+function handleFileAttach(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { toast('Image too large (max 5MB)'); return; }
+  const reader = new FileReader();
+  reader.onload = (evt) => {
+    const dataUrl = evt.target.result;
+    const base64 = dataUrl.split(',')[1];
+    attachedImage = { data: base64, mediaType: file.type || 'image/jpeg', name: file.name };
+    document.getElementById('attach-img').src = dataUrl;
+    document.getElementById('attach-name').textContent = file.name;
+    document.getElementById('attach-preview').classList.add('show');
+    if (!document.getElementById('sage-input').value) {
+      document.getElementById('sage-input').value = 'Draft me a cover letter for this job';
+    }
+    document.getElementById('sage-input').focus();
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+}
+
+function removeAttachment() {
+  attachedImage = null;
+  document.getElementById('attach-preview').classList.remove('show');
+}
+
+function buildContext() {
+  let ctx = "";
+  if (items.length) ctx += `LEARNING:\n${items.map(i => `• ${i.title} (${i.status}, ${i.progress}%)${i.category?` — ${i.category}`:''}${i.notes?`. Notes: ${i.notes}`:''}`).join('\n')}\n\n`;
+  if (jobs.length) ctx += `JOBS:\n${jobs.map(j => `• ${j.company} — ${j.role} (${j.status})${j.location?`, ${j.location}`:''}, applied ${j.appliedDate}${j.notes?`. Notes: ${j.notes}`:''}`).join('\n')}\n\n`;
+  if (!ctx) ctx = "User hasn't added anything yet but can browse the Library tab.";
+  return ctx;
+}
+function toggleSage() {
+  const panel = document.getElementById('sage-panel');
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) {
+    if (chatHistory.length === 0) {
+      const greeting = (items.length || jobs.length)
+        ? `Hi! I'm **Sage**, your mentor in Atlas. I can see ${items.length?`**${items.length} learning topic${items.length>1?'s':''}**`:''}${items.length&&jobs.length?' and ':''}${jobs.length?`**${jobs.length} job application${jobs.length>1?'s':''}**`:''}.\n\n**New superpowers** ✨\n• 📎 Attach a job description screenshot → I'll read it and draft a cover letter\n• I can **add jobs and learning topics directly** for you (with your approval)\n\nWhat's on your mind?`
+        : `Hi! I'm **Sage**, your AI mentor.\n\n**What I can do for you:**\n• 📎 Read job descriptions from screenshots and draft cover letters\n• Add jobs to your Jobs tab automatically (with your approval)\n• Plan what to learn and add topics to your Learning tab\n• Teach, quiz, and prep you for interviews\n\nTry: attach a job screenshot, or say "I want to learn web development".`;
+      chatHistory.push({ role: 'assistant', content: greeting });
+      saveChat();
+    }
+    renderChat(); renderQuickChips();
+    setTimeout(() => document.getElementById('sage-input').focus(), 100);
+  }
+}
+function renderChat() {
+  const box = document.getElementById('sage-messages');
+  box.innerHTML = chatHistory.map((m, idx) => {
+    // Hide tool_result messages from view (they're sent back to API but not shown)
+    if (m._isToolResult) return '';
+
+    // For assistant messages, may have tool_use blocks
+    if (m.role === 'assistant' && Array.isArray(m.content)) {
+      const textParts = m.content.filter(b => b.type === 'text').map(b => b.text).join('\n').trim();
+      const toolUses = m.content.filter(b => b.type === 'tool_use');
+      const executed = m._executedTools || {};
+      const textBubble = textParts ? `<div class="msg sage"><div class="msg-bubble">${formatMsg(textParts)}</div></div>` : '';
+      const toolCards = toolUses.map(tu => `<div class="msg sage" style="max-width:95%;"><div style="width:100%;">${renderToolUseCard(tu, idx, executed[tu.id])}</div></div>`).join('');
+      return textBubble + toolCards;
+    }
+
+    // Regular text message
+    const display = m._display || (typeof m.content === 'string' ? m.content : '');
+    return `<div class="msg ${m.role==='user'?'user':'sage'}"><div class="msg-bubble">${formatMsg(display)}</div></div>`;
+  }).join('');
+  if (isThinking) box.insertAdjacentHTML('beforeend', `<div class="msg sage"><div class="typing"><span></span><span></span><span></span></div></div>`);
+  box.scrollTop = box.scrollHeight;
+}
+function formatMsg(text) { let h=esc(text); h=h.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>'); h=h.replace(/\*(.+?)\*/g,'<em>$1</em>'); h=h.replace(/`([^`]+)`/g,'<code>$1</code>'); return h; }
+function renderQuickChips() {
+  const box = document.getElementById('sage-quick');
+  const inProgress = items.filter(i => i.status === 'in-progress');
+  const interviews = jobs.filter(j => j.status === 'interview');
+  const chips = [];
+  if (activeTab === 'jobs') {
+    chips.push('📎 Attach a JD for a cover letter');
+    if (interviews.length) chips.push(`Prep for ${interviews[0].company}`);
+    chips.push('Resume tips for freshers');
+  } else if (activeTab === 'library') {
+    chips.push('Plan what I should learn');
+    chips.push('Build a roadmap for me');
+  } else if (activeTab === 'plans') {
+    if (inProgress.length) chips.push(`Plan all of ${inProgress[0].title}`);
+    chips.push('Plan a full DSA curriculum');
+    chips.push('How many weeks to learn React?');
+  } else {
+    if (inProgress.length) { chips.push(`Plan full curriculum for ${inProgress[0].title}`); chips.push(`Quiz me on ${inProgress[0].title}`); }
+    chips.push('I want to learn something new');
+    chips.push('What should I learn next?');
+  }
+  chips.push('Plan my week');
+  box.innerHTML = chips.map(c => `<button class="quick-chip" onclick="quickAsk('${esc(c).replace(/'/g,'&#39;')}')">${esc(c)}</button>`).join('');
+}
+function quickAsk(t) { document.getElementById('sage-input').value = t; sendToSage(); }
+
+function clearSageChat() {
+  if (!confirm('Clear all chat history with Sage? Your jobs, learning topics, and plans are NOT affected.')) return;
+  chatHistory = [];
+  saveChat();
+  // Reset greeting
+  const greeting = (items.length || jobs.length)
+    ? `Chat cleared ✨\n\nI can see ${items.length?`**${items.length} learning topic${items.length>1?'s':''}**`:''}${items.length&&jobs.length?' and ':''}${jobs.length?`**${jobs.length} job application${jobs.length>1?'s':''}**`:''} on your dashboard. What's next?`
+    : `Chat cleared ✨\n\nWhat would you like to do?`;
+  chatHistory.push({ role: 'assistant', content: greeting });
+  saveChat();
+  renderChat();
+  renderQuickChips();
+  toast('Chat cleared');
+}
+function askSageAbout(topic) {
+  if (!document.getElementById('sage-panel').classList.contains('open')) toggleSage();
+  document.getElementById('sage-input').value = `Teach me about "${topic}"`;
+  setTimeout(() => sendToSage(), 200);
+}
+function askSageAboutJob(company, role) {
+  if (!document.getElementById('sage-panel').classList.contains('open')) toggleSage();
+  document.getElementById('sage-input').value = `Help me prepare for my ${role} application at ${company}`;
+  setTimeout(() => sendToSage(), 200);
+}
+async function sendToSage() {
+  if (isThinking) return;
+  const input = document.getElementById('sage-input');
+  const text = input.value.trim();
+  if (!text && !attachedImage) return;
+  input.value = '';
+
+  // Build user message content (text + optional image)
+  let userContent;
+  let displayText = text || '[image]';
+  if (attachedImage) {
+    userContent = [
+      { type: 'image', source: { type: 'base64', media_type: attachedImage.mediaType, data: attachedImage.data } },
+      { type: 'text', content: text || 'Read this job description and draft a cover letter for me.' }
+    ];
+    // 'content' should be 'text' field actually for text blocks
+    userContent[1] = { type: 'text', text: text || 'Read this job description and draft a cover letter for me.' };
+    displayText = `📎 ${attachedImage.name}${text ? '\n\n' + text : ''}`;
+  } else {
+    userContent = text;
+  }
+
+  chatHistory.push({ role: 'user', content: userContent, _display: displayText });
+  saveChat();
+  const sentImage = attachedImage;
+  removeAttachment();
+
+  isThinking = true;
+  document.getElementById('sage-send').disabled = true;
+  renderChat();
+
+  await runSageTurn();
+}
+
+async function runSageTurn() {
+  try {
+    const ctx = buildContext();
+    // Build messages array for API: inject context into the latest user message
+    const msgs = chatHistory.map((m, idx) => {
+      const isLastUser = idx === chatHistory.length - 1 && m.role === 'user';
+      if (Array.isArray(m.content)) {
+        // multimodal content
+        if (isLastUser) {
+          const augmented = m.content.map(block => {
+            if (block.type === 'text') return { type: 'text', text: `[User's Atlas context:\n${ctx}]\n\n${block.text}` };
+            return block;
+          });
+          return { role: 'user', content: augmented };
+        }
+        return { role: m.role, content: m.content };
+      } else {
+        if (isLastUser) return { role: 'user', content: `[User's Atlas context:\n${ctx}]\n\n${m.content}` };
+        return { role: m.role, content: m.content };
+      }
+    });
+
+    const r = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 16000,
+        system: SAGE_SYSTEM,
+        tools: SAGE_TOOLS,
+        messages: msgs
+      })
+    });
+    const data = await r.json();
+
+    if (!data.content) {
+      chatHistory.push({ role: 'assistant', content: "Sorry, I had trouble responding. Try again?" });
+      saveChat();
+      return;
+    }
+
+    // Process content blocks: text + tool_use
+    const textParts = data.content.filter(b => b.type === 'text').map(b => b.text).join('\n').trim();
+    const toolUses = data.content.filter(b => b.type === 'tool_use');
+
+    // Detect truncation OR fake XML tool calls (model output them as text instead of using API)
+    const truncated = data.stop_reason === 'max_tokens';
+    const looksLikeFakeToolCall = /<\/?(function_calls|invoke|parameter)>/i.test(textParts);
+
+    if (looksLikeFakeToolCall || (truncated && toolUses.length === 0)) {
+      // Strip the XML mess from displayed text and add a warning
+      const cleaned = textParts.replace(/<\/?(function_calls|invoke|parameter)[^>]*>/gi, '').replace(/\n{3,}/g, '\n\n').trim();
+      const warning = '\n\n⚠️ **That plan was too large to save in one go.** Nothing was actually added. Try asking me to plan it in a smaller chunk (e.g. "plan just the first 4 weeks") and I\'ll make sure it lands properly.';
+      chatHistory.push({ role: 'assistant', content: cleaned + warning });
+      saveChat();
+      return;
+    }
+
+    // Save the full assistant response (text + tool_use) so we can continue the conversation later
+    chatHistory.push({ role: 'assistant', content: data.content, _display: textParts || '(action prepared)', _toolUses: toolUses });
+    saveChat();
+
+  } catch (err) {
+    console.error(err);
+    chatHistory.push({ role: 'assistant', content: "I couldn't reach my thoughts just now. Try again in a moment." });
+    saveChat();
+  } finally {
+    isThinking = false;
+    document.getElementById('sage-send').disabled = false;
+    renderChat();
+    renderQuickChips();
+  }
+}
+
+/* ===== Tool execution ===== */
+function executeToolUse(toolUseId, toolName, input, msgIndex) {
+  let result = '';
+  if (toolName === 'add_job_application') {
+    const now = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
+    jobs.unshift({
+      id: Date.now(),
+      company: input.company || '',
+      role: input.role || '',
+      location: input.location || '',
+      source: input.source || 'Via Sage',
+      status: input.status || 'applied',
+      link: input.link || '',
+      notes: input.notes || '',
+      appliedDate: now
+    });
+    saveJobs();
+    renderJobs();
+    document.getElementById('count-jobs').textContent = jobs.length;
+    result = `✓ Added ${input.company} — ${input.role} to your Jobs tab.`;
+    toast(`💼 Added ${input.company}`);
+  } else if (toolName === 'add_learning_topics') {
+    const topics = (input.topics || []).filter(t => t && t.title);
+    let added = 0, skipped = 0;
+    topics.forEach(t => {
+      if (items.some(i => i.title.toLowerCase() === t.title.toLowerCase())) { skipped++; return; }
+      items.unshift({
+        id: Date.now() + Math.random(),
+        title: t.title,
+        category: t.category || '',
+        resource: t.resource || 'Via Sage',
+        status: 'todo',
+        notes: t.notes || '',
+        progress: 0,
+        created: new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})
+      });
+      added++;
+    });
+    save();
+    render();
+    document.getElementById('count-learning').textContent = items.length;
+    result = `✓ Added ${added} topic${added!==1?'s':''} to Learning${skipped ? ` (${skipped} already existed, skipped)` : ''}.`;
+    toast(`📚 ${added} topic${added!==1?'s':''} added`);
+  } else if (toolName === 'create_week_plan') {
+    // Ensure topic exists; if not, add it
+    let topic = items.find(i => i.title.toLowerCase() === (input.topic_title||'').toLowerCase());
+    if (!topic) {
+      topic = {
+        id: Date.now() + Math.random(),
+        title: input.topic_title,
+        category: '',
+        resource: 'Via Sage',
+        status: 'in-progress',
+        notes: '',
+        progress: 0,
+        created: new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})
+      };
+      items.unshift(topic);
+      save();
+    }
+    const plan = {
+      id: Date.now() + Math.random(),
+      topicId: topic.id,
+      topicTitle: topic.title,
+      title: input.week_title || `${topic.title} — Week ${weekPlans.filter(p => p.topicTitle.toLowerCase() === topic.title.toLowerCase()).length + 1}`,
+      days: (input.days || []).map((d, i) => ({ day: i + 1, title: d.title || `Day ${i+1}`, target: d.target || '', done: false })),
+      quiz: {
+        questions: (input.quiz || []).map(q => ({ question: q.question, options: q.options || [], correct: q.correct })),
+        attempts: 0,
+        maxAttempts: 3,
+        passed: false,
+        boostApplied: false,
+        bestScore: 0
+      },
+      progressBoost: input.progress_boost || 20,
+      created: new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})
+    };
+    weekPlans.unshift(plan);
+    savePlans();
+    render();
+    document.getElementById('count-plans').textContent = weekPlans.length;
+    result = `✓ Created "${plan.title}" with ${plan.days.length} daily targets and a ${plan.quiz.questions.length}-question quiz worth +${plan.progressBoost}% progress.`;
+    toast(`🗓️ Plan created — check Plans tab`);
+  } else if (toolName === 'create_curriculum') {
+    // Ensure topic exists
+    let topic = items.find(i => i.title.toLowerCase() === (input.topic_title||'').toLowerCase());
+    if (!topic) {
+      topic = {
+        id: Date.now() + Math.random(),
+        title: input.topic_title,
+        category: '',
+        resource: 'Via Sage',
+        status: 'in-progress',
+        notes: '',
+        progress: 0,
+        created: new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})
+      };
+      items.unshift(topic);
+      save();
+    }
+    const weeks = input.weeks || [];
+    const createdPlans = [];
+    weeks.forEach((w, wi) => {
+      const plan = {
+        id: Date.now() + Math.random() + wi,
+        topicId: topic.id,
+        topicTitle: topic.title,
+        title: w.week_title || `${topic.title} — Week ${wi+1}`,
+        weekNumber: wi + 1,
+        days: (w.days || []).map((d, i) => ({ day: i + 1, title: d.title || `Day ${i+1}`, target: d.target || '', done: false })),
+        quiz: {
+          questions: (w.quiz || []).map(q => ({ question: q.question, options: q.options || [], correct: q.correct })),
+          attempts: 0,
+          maxAttempts: 3,
+          passed: false,
+          boostApplied: false,
+          bestScore: 0
+        },
+        progressBoost: w.progress_boost || Math.round(100 / weeks.length),
+        created: new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})
+      };
+      weekPlans.push(plan);
+      createdPlans.push(plan);
+    });
+    savePlans();
+    render();
+    document.getElementById('count-plans').textContent = weekPlans.length;
+    const totalBoost = createdPlans.reduce((s, p) => s + p.progressBoost, 0);
+    result = `✓ Created a ${createdPlans.length}-week curriculum for ${topic.title} (${createdPlans.length * 5} daily targets, ${createdPlans.length} quizzes, sums to +${totalBoost}% mastery).`;
+    toast(`🗓️ ${createdPlans.length}-week curriculum created`);
+  }
+
+  // Mark this tool_use as executed in the chat history
+  const msg = chatHistory[msgIndex];
+  if (msg && msg._executedTools) msg._executedTools[toolUseId] = result;
+  else if (msg) msg._executedTools = { [toolUseId]: result };
+  saveChat();
+
+  // Tell Sage the tool succeeded so she can respond
+  chatHistory.push({
+    role: 'user',
+    content: [{ type: 'tool_result', tool_use_id: toolUseId, content: result }],
+    _display: result,
+    _isToolResult: true
+  });
+  saveChat();
+  isThinking = true;
+  document.getElementById('sage-send').disabled = true;
+  renderChat();
+  runSageTurn();
+}
+
+function cancelToolUse(toolUseId, msgIndex) {
+  const msg = chatHistory[msgIndex];
+  if (msg && msg._executedTools) msg._executedTools[toolUseId] = '✕ Cancelled';
+  else if (msg) msg._executedTools = { [toolUseId]: '✕ Cancelled' };
+  saveChat();
+  chatHistory.push({
+    role: 'user',
+    content: [{ type: 'tool_result', tool_use_id: toolUseId, content: 'User cancelled. Do not retry; ask if they want changes.' }],
+    _display: '✕ Cancelled',
+    _isToolResult: true
+  });
+  saveChat();
+  isThinking = true;
+  document.getElementById('sage-send').disabled = true;
+  renderChat();
+  runSageTurn();
+}
+
+function renderToolUseCard(tu, msgIndex, executed) {
+  if (executed) return `<div class="tool-done">${esc(executed)}</div>`;
+  const input = tu.input || {};
+  if (tu.name === 'add_job_application') {
+    return `
+      <div class="tool-card">
+        <div class="tool-card-header">💼 Add to Jobs?</div>
+        <div class="tool-field"><label>Company</label><input type="text" id="tj-c-${tu.id}" value="${esc(input.company||'')}" /></div>
+        <div class="tool-field"><label>Role</label><input type="text" id="tj-r-${tu.id}" value="${esc(input.role||'')}" /></div>
+        <div class="tool-field"><label>Location</label><input type="text" id="tj-l-${tu.id}" value="${esc(input.location||'')}" /></div>
+        <div class="tool-field"><label>Source</label><input type="text" id="tj-s-${tu.id}" value="${esc(input.source||'')}" /></div>
+        <div class="tool-field"><label>Status</label><select id="tj-st-${tu.id}">
+          <option value="applied" ${input.status==='applied'?'selected':''}>Applied</option>
+          <option value="oa" ${input.status==='oa'?'selected':''}>OA</option>
+          <option value="interview" ${input.status==='interview'?'selected':''}>Interview</option>
+          <option value="offer" ${input.status==='offer'?'selected':''}>Offer</option>
+          <option value="rejected" ${input.status==='rejected'?'selected':''}>Rejected</option>
+          <option value="ghosted" ${input.status==='ghosted'?'selected':''}>Ghosted</option>
+        </select></div>
+        <div class="tool-field"><label>Notes</label><textarea id="tj-n-${tu.id}">${esc(input.notes||'')}</textarea></div>
+        <div class="tool-actions">
+          <button class="tool-btn tool-btn-no" onclick="cancelToolUse('${tu.id}',${msgIndex})">Cancel</button>
+          <button class="tool-btn tool-btn-yes" onclick="confirmAddJob('${tu.id}',${msgIndex})">+ Add Job</button>
+        </div>
+      </div>`;
+  } else if (tu.name === 'add_learning_topics') {
+    const topics = input.topics || [];
+    return `
+      <div class="tool-card">
+        <div class="tool-card-header">📚 Add ${topics.length} topic${topics.length!==1?'s':''} to Learning?</div>
+        ${topics.map((t,i) => `
+          <div class="tool-batch-item">
+            <input type="checkbox" id="tl-chk-${tu.id}-${i}" checked />
+            <div style="flex:1;">
+              <input type="text" id="tl-t-${tu.id}-${i}" value="${esc(t.title||'')}" style="background:transparent;border:none;color:var(--text);font-weight:500;font-size:13px;width:100%;padding:0;outline:none;" />
+              ${t.category ? `<div style="font-size:11px;color:var(--text3);">${esc(t.category)}${t.notes ? ' · ' + esc(t.notes) : ''}</div>` : (t.notes ? `<div style="font-size:11px;color:var(--text3);">${esc(t.notes)}</div>` : '')}
+            </div>
+          </div>`).join('')}
+        <div class="tool-actions">
+          <button class="tool-btn tool-btn-no" onclick="cancelToolUse('${tu.id}',${msgIndex})">Cancel</button>
+          <button class="tool-btn tool-btn-yes" onclick="confirmAddLearning('${tu.id}',${msgIndex})">+ Add Selected</button>
+        </div>
+      </div>`;
+  } else if (tu.name === 'create_week_plan') {
+    const days = input.days || [];
+    const quiz = input.quiz || [];
+    return `
+      <div class="tool-card">
+        <div class="tool-card-header">🗓️ Create week plan?</div>
+        <div style="font-family:'Fraunces',serif;font-size:18px;color:var(--text);margin-bottom:4px;">${esc(input.week_title||'')}</div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:12px;">Topic: <strong>${esc(input.topic_title||'')}</strong> · Quiz boost: <strong>+${input.progress_boost||20}%</strong></div>
+        <div style="margin-bottom:10px;">
+          ${days.map((d,i) => `<div class="tool-batch-item" style="display:block;padding:8px 10px;"><div style="font-weight:500;font-size:13px;color:var(--text);">Day ${i+1}: ${esc(d.title||'')}</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">${esc(d.target||'')}</div></div>`).join('')}
+        </div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:10px;">+ ${quiz.length}-question quiz at the end (3 attempts to pass)</div>
+        <div class="tool-actions">
+          <button class="tool-btn tool-btn-no" onclick="cancelToolUse('${tu.id}',${msgIndex})">Cancel</button>
+          <button class="tool-btn tool-btn-yes" onclick="confirmCreatePlan('${tu.id}',${msgIndex})">+ Create Plan</button>
+        </div>
+      </div>`;
+  } else if (tu.name === 'create_curriculum') {
+    const weeks = input.weeks || [];
+    const totalBoost = weeks.reduce((s, w) => s + (w.progress_boost || 0), 0);
+    return `
+      <div class="tool-card">
+        <div class="tool-card-header">🎓 Create ${weeks.length}-week curriculum?</div>
+        <div style="font-family:'Fraunces',serif;font-size:18px;color:var(--text);margin-bottom:4px;">${esc(input.topic_title||'')}</div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:14px;">${weeks.length} weeks · ${weeks.length*5} daily targets · ${weeks.length} quizzes · sums to <strong>+${totalBoost}%</strong> mastery</div>
+        <div style="margin-bottom:10px;">
+          ${weeks.map((w,i) => `<div class="tool-batch-item" style="display:block;padding:10px 12px;"><div style="display:flex;justify-content:space-between;gap:8px;"><div style="font-weight:600;font-size:13px;color:var(--text);">Week ${i+1}: ${esc((w.week_title||'').replace(/.*Week\s*\d+:?\s*/i,'').replace(/.*Week\s*\d+\s*[-—]\s*/i,'') || 'Untitled')}</div><div style="font-size:11px;color:var(--accent);font-weight:600;white-space:nowrap;">+${w.progress_boost||0}%</div></div><div style="font-size:11px;color:var(--text3);margin-top:3px;">${esc((w.days||[]).map(d=>d.title.replace(/Day\s*\d+:?\s*/i,'')).slice(0,3).join(' · '))}${(w.days||[]).length>3?' · …':''}</div></div>`).join('')}
+        </div>
+        <div class="tool-actions">
+          <button class="tool-btn tool-btn-no" onclick="cancelToolUse('${tu.id}',${msgIndex})">Cancel</button>
+          <button class="tool-btn tool-btn-yes" onclick="confirmCreateCurriculum('${tu.id}',${msgIndex})">+ Create All ${weeks.length} Weeks</button>
+        </div>
+      </div>`;
+  }
+  return '';
+}
+
+function confirmCreateCurriculum(tuId, msgIndex) {
+  const msg = chatHistory[msgIndex];
+  const fromContent = Array.isArray(msg.content) ? msg.content.find(b => b.type === 'tool_use' && b.id === tuId) : null;
+  const tu = fromContent || (msg._toolUses || []).find(t => t.id === tuId);
+  if (!tu) return;
+  executeToolUse(tuId, 'create_curriculum', tu.input, msgIndex);
+}
+
+function confirmCreatePlan(tuId, msgIndex) {
+  const msg = chatHistory[msgIndex];
+  const fromContent = Array.isArray(msg.content) ? msg.content.find(b => b.type === 'tool_use' && b.id === tuId) : null;
+  const tu = fromContent || (msg._toolUses || []).find(t => t.id === tuId);
+  if (!tu) return;
+  executeToolUse(tuId, 'create_week_plan', tu.input, msgIndex);
+}
+
+function confirmAddJob(tuId, msgIndex) {
+  const input = {
+    company: document.getElementById(`tj-c-${tuId}`).value.trim(),
+    role: document.getElementById(`tj-r-${tuId}`).value.trim(),
+    location: document.getElementById(`tj-l-${tuId}`).value.trim(),
+    source: document.getElementById(`tj-s-${tuId}`).value.trim(),
+    status: document.getElementById(`tj-st-${tuId}`).value,
+    notes: document.getElementById(`tj-n-${tuId}`).value.trim()
+  };
+  if (!input.company || !input.role) { toast('Company and role required'); return; }
+  executeToolUse(tuId, 'add_job_application', input, msgIndex);
+}
+
+function confirmAddLearning(tuId, msgIndex) {
+  const msg = chatHistory[msgIndex];
+  const fromMeta = (msg._toolUses || []).find(t => t.id === tuId);
+  const fromContent = Array.isArray(msg.content) ? msg.content.find(b => b.type === 'tool_use' && b.id === tuId) : null;
+  const tu = fromMeta || fromContent;
+  if (!tu) return;
+  const topics = (tu.input.topics || []).map((t,i) => {
+    const chk = document.getElementById(`tl-chk-${tuId}-${i}`);
+    if (!chk || !chk.checked) return null;
+    const titleEl = document.getElementById(`tl-t-${tuId}-${i}`);
+    return { title: (titleEl ? titleEl.value : t.title).trim(), category: t.category, resource: t.resource, notes: t.notes };
+  }).filter(Boolean);
+  if (!topics.length) { toast('Nothing selected'); return; }
+  executeToolUse(tuId, 'add_learning_topics', { topics }, msgIndex);
+}
+
+/* ============ BOT DASHBOARD ============ */
+let botConfig = JSON.parse(localStorage.getItem('atlas-bot-config') || 'null');
+let botRefreshTimer = null;
+
+function saveBotConfig(cfg) {
+  botConfig = cfg;
+  if (cfg) localStorage.setItem('atlas-bot-config', JSON.stringify(cfg));
+  else localStorage.removeItem('atlas-bot-config');
+}
+
+async function renderBotTab() {
+  const setup = document.getElementById('bot-setup-screen');
+  const dash = document.getElementById('bot-dashboard');
+  const loading = document.getElementById('bot-loading');
+
+  loading.style.display = 'none';
+  setup.style.display = 'none';
+  dash.style.display = 'none';
+
+  if (!botConfig || !botConfig.url) {
+    setup.style.display = 'block';
+    setup.innerHTML = renderBotSetup();
+    updateBotDot('idle');
+    return;
+  }
+
+  // Show dashboard frame immediately, then fetch data
+  dash.style.display = 'block';
+  dash.innerHTML = renderBotDashboardShell();
+  await refreshBotData();
+}
+
+function renderBotSetup(errorMsg) {
+  const isFile = window.location.protocol === 'file:';
+  return `
+    <div class="bot-setup">
+      <h3>🤖 Connect your Job Bot</h3>
+      <p>Once you've deployed your Job Bot to Cloudflare (see the bot README), paste its URL and trigger token below. Atlas will then show its status, recent jobs, and let you trigger runs.</p>
+
+      ${isFile ? `<div class="bot-warning">
+        ⚠️ <strong>You're opening Atlas from a local file (file://).</strong> Browsers block calls to external servers from local files. To use the Bot tab, host Atlas on a real URL — free options: GitHub Pages, Netlify, or Cloudflare Pages. Or run Atlas via a local server (<code>npx serve .</code>).
+      </div>` : ''}
+
+      ${errorMsg ? `<div class="bot-warning">❌ ${esc(errorMsg)}</div>` : ''}
+
+      <div class="field">
+        <label>Bot URL</label>
+        <input type="text" id="bot-url-input" placeholder="https://atlas-job-bot.yourname.workers.dev" />
+        <div class="hint">From Cloudflare — the URL where your bot is deployed.</div>
+      </div>
+      <div class="field">
+        <label>Trigger Token</label>
+        <input type="password" id="bot-token-input" placeholder="The random string you set as TRIGGER_TOKEN" />
+        <div class="hint">Needed for the "Run Now" button. Stored only in your browser, never sent anywhere else.</div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:18px;">
+        <button class="btn btn-primary" onclick="saveBotSettings()">Connect</button>
+        <button class="btn btn-ghost" onclick="testBotConnection()">Test connection</button>
+      </div>
+    </div>`;
+}
+
+async function testBotConnection() {
+  const url = document.getElementById('bot-url-input').value.trim().replace(/\/$/, '');
+  if (!url) { toast('Enter a URL first'); return; }
+  try {
+    const r = await fetch(url + '/health');
+    if (r.ok) toast('✓ Bot is alive');
+    else toast(`✕ Got ${r.status} from bot`);
+  } catch (err) {
+    toast('✕ Could not reach bot (CORS or wrong URL)');
+  }
+}
+
+function saveBotSettings() {
+  const url = document.getElementById('bot-url-input').value.trim().replace(/\/$/, '');
+  const token = document.getElementById('bot-token-input').value.trim();
+  if (!url) { toast('Enter the bot URL'); return; }
+  if (!url.startsWith('http')) { toast('URL must start with https://'); return; }
+  saveBotConfig({ url, token });
+  toast('🤖 Bot connected');
+  renderBotTab();
+}
+
+function disconnectBot() {
+  if (!confirm('Disconnect from bot? Your URL & token will be cleared from this browser. The bot itself keeps running.')) return;
+  saveBotConfig(null);
+  updateBotDot('idle');
+  toast('Bot disconnected');
+  renderBotTab();
+}
+
+function renderBotDashboardShell() {
+  return `
+    <div class="bot-status-bar">
+      <h2>🤖 Job Bot <span id="bot-status-pill" class="bot-status-pill idle">checking…</span></h2>
+      <div class="bot-bar-actions">
+        <button class="btn btn-primary" id="bot-run-btn" onclick="runBotNow()">▶ Run Now</button>
+        <button class="btn btn-ghost" onclick="refreshBotData()">⟳ Refresh</button>
+        <button class="btn btn-ghost" onclick="disconnectBot()">⚙ Settings</button>
+      </div>
+    </div>
+
+    <div class="bot-stat-grid" id="bot-stats"></div>
+
+    <div class="bot-section">
+      <div class="bot-section-title">📋 Saved Searches</div>
+      <div id="bot-searches">Loading…</div>
+    </div>
+
+    <div class="bot-section">
+      <div class="bot-section-title">📬 Latest Jobs From Bot</div>
+      <div id="bot-jobs">Loading…</div>
+    </div>
+
+    <div class="bot-section">
+      <div class="bot-section-title">📜 Recent Runs</div>
+      <div id="bot-history">Loading…</div>
+    </div>`;
+}
+
+function updateBotDot(state) {
+  const dot = document.getElementById('bot-status-dot');
+  if (!dot) return;
+  const colors = { ok: '#4ade80', bad: '#ef4444', idle: '#6b6789' };
+  dot.style.background = colors[state] || colors.idle;
+  dot.style.boxShadow = state === 'ok' ? '0 0 8px ' + colors.ok : 'none';
+}
+
+async function botFetch(path, options) {
+  if (!botConfig || !botConfig.url) throw new Error('Not connected');
+  const r = await fetch(botConfig.url + path, options);
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return await r.json();
+}
+
+async function refreshBotData() {
+  if (!botConfig) return;
+  try {
+    const [status, searches, jobs, history] = await Promise.all([
+      botFetch('/status').catch(() => null),
+      botFetch('/searches').catch(() => []),
+      botFetch('/recent-jobs').catch(() => []),
+      botFetch('/run-history').catch(() => [])
+    ]);
+
+    if (!status) {
+      const pill = document.getElementById('bot-status-pill');
+      if (pill) { pill.textContent = '✕ Unreachable'; pill.className = 'bot-status-pill bad'; }
+      updateBotDot('bad');
+      return;
+    }
+
+    renderBotStatus(status);
+    renderBotSearches(searches, status);
+    renderBotJobs(jobs);
+    renderBotHistory(history);
+    updateBotDot('ok');
+  } catch (err) {
+    const pill = document.getElementById('bot-status-pill');
+    if (pill) { pill.textContent = '✕ Error'; pill.className = 'bot-status-pill bad'; }
+    updateBotDot('bad');
+    console.error(err);
+  }
+}
+
+function renderBotStatus(status) {
+  const pill = document.getElementById('bot-status-pill');
+  if (pill) { pill.textContent = '● Connected'; pill.className = 'bot-status-pill ok'; }
+
+  const last = status.last_run;
+  const lastRunTime = last && last.timestamp ? timeAgo(new Date(last.timestamp)) : 'Not run yet';
+  const lastJobs = last ? (last.total_new || 0) : 0;
+  const nextRun = status.next_run_estimate ? timeUntil(new Date(status.next_run_estimate)) : '—';
+  const emailSent = last && last.sent ? 'Yes' : 'No';
+
+  document.getElementById('bot-stats').innerHTML = `
+    <div class="stat"><div class="stat-label">Last run</div><div class="stat-value" style="font-size:22px;">${esc(lastRunTime)}</div></div>
+    <div class="stat"><div class="stat-label">Jobs found</div><div class="stat-value">${lastJobs}</div></div>
+    <div class="stat"><div class="stat-label">Email sent</div><div class="stat-value" style="font-size:22px;">${emailSent}</div></div>
+    <div class="stat"><div class="stat-label">Next run in</div><div class="stat-value" style="font-size:22px;">${esc(nextRun)}</div></div>`;
+}
+
+function renderBotSearches(searches, status) {
+  const lastRun = status.last_run || {};
+  const perSearch = (lastRun.searches || []).reduce((acc, s) => { acc[s.label] = s.found; return acc; }, {});
+  const box = document.getElementById('bot-searches');
+  if (!searches.length) { box.innerHTML = '<div style="color:var(--text3);font-size:13px;">No searches configured.</div>'; return; }
+  box.innerHTML = searches.map(s => `
+    <div class="bot-search-row">
+      <div>
+        <div class="bot-search-label">${esc(s.label)}</div>
+        <div class="bot-search-meta">${esc((s.keywords||[]).slice(0,3).join(', '))}${(s.keywords||[]).length>3?'…':''} · ${esc(s.location)}${s.include_remote||s.remote_only?' · remote OK':''}</div>
+      </div>
+      <div class="bot-search-count">${(perSearch[s.label] != null) ? perSearch[s.label] + ' jobs' : '—'}</div>
+    </div>`).join('');
+}
+
+function renderBotJobs(jobs) {
+  const box = document.getElementById('bot-jobs');
+  if (!jobs || !jobs.length) {
+    box.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:1rem 0;">No jobs from the latest run. The bot may not have run yet — try "Run Now" above.</div>';
+    return;
+  }
+  box.innerHTML = jobs.map(j => {
+    const colors = { Adzuna: ['#185FA5','#E6F1FB'], Remotive: ['#3B6D11','#EAF3DE'], Jooble: ['#854F0B','#FAEEDA'] }[j.source] || ['#5F5E5A','#F1EFE8'];
+    const alreadyTracked = jobsAlreadyTracked(j);
+    return `
+      <div class="bot-job-card">
+        <div class="bot-job-title">${esc(j.title)}${j.is_remote ? ' <span style="font-size:10px;font-weight:600;padding:1px 7px;border-radius:100px;background:rgba(167,139,250,0.2);color:#c4b5fd;margin-left:4px;">REMOTE</span>' : ''}</div>
+        <div class="bot-job-meta">${esc(j.company)} · ${esc(j.location||'')}${j.salary?' · '+esc(j.salary):''}</div>
+        ${j.description ? `<div class="bot-job-desc">${esc(j.description.slice(0,180))}${j.description.length>180?'…':''}</div>` : ''}
+        <div class="bot-job-actions">
+          <span class="bot-job-source" style="background:${colors[1]};color:${colors[0]};">${esc(j.source)}</span>
+          <a href="${esc(j.url)}" target="_blank" rel="noopener" class="btn btn-ghost" style="padding:6px 12px;font-size:12px;text-decoration:none;display:inline-block;">Open ↗</a>
+          ${alreadyTracked
+            ? '<span style="font-size:12px;color:#86efac;">✓ In your Jobs</span>'
+            : `<button class="btn btn-primary" style="padding:6px 12px;font-size:12px;" onclick='addJobFromBot(${JSON.stringify(j).replace(/'/g,"&#39;")})'>+ Add to Tracker</button>`}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function jobsAlreadyTracked(j) {
+  return jobs.some(myJob => (myJob.link && myJob.link === j.url) || (myJob.company.toLowerCase() === (j.company||'').toLowerCase() && myJob.role.toLowerCase() === (j.title||'').toLowerCase()));
+}
+
+function addJobFromBot(j) {
+  const now = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'});
+  jobs.unshift({
+    id: Date.now() + Math.random(),
+    company: j.company || 'Unknown',
+    role: j.title || 'Unknown role',
+    location: j.location || '',
+    source: j.source || 'Job Bot',
+    status: 'applied',
+    link: j.url || '',
+    notes: j.description ? j.description.slice(0, 300) : '',
+    appliedDate: now
+  });
+  saveJobs();
+  renderJobs();
+  document.getElementById('count-jobs').textContent = jobs.length;
+  toast('💼 Added to Jobs tab');
+  // Re-render to update "Already tracked" indicator
+  refreshBotData();
+}
+
+function renderBotHistory(history) {
+  const box = document.getElementById('bot-history');
+  if (!history || !history.length) {
+    box.innerHTML = '<div style="color:var(--text3);font-size:13px;">No run history yet.</div>';
+    return;
+  }
+  box.innerHTML = history.slice(0, 7).map(r => {
+    const when = r.timestamp ? timeAgo(new Date(r.timestamp)) : '—';
+    const ok = r.sent || r.total_new === 0;
+    const result = r.errors && r.errors.length
+      ? `<span style="color:#fca5a5;">${r.errors.length} error${r.errors.length>1?'s':''}</span>`
+      : r.sent ? `<span style="color:#86efac;">✓ Sent ${r.total_new||0} jobs</span>`
+      : r.total_new === 0 ? `<span style="color:var(--text3);">No new jobs</span>`
+      : `<span style="color:var(--text3);">${r.total_new||0} found, not sent</span>`;
+    return `<div class="bot-history-row"><span class="bot-history-time">${esc(when)}</span><span class="bot-history-result">${result}</span></div>`;
+  }).join('');
+}
+
+async function runBotNow() {
+  if (!botConfig || !botConfig.token) {
+    toast('Need a trigger token to run manually — open Settings');
+    return;
+  }
+  const btn = document.getElementById('bot-run-btn');
+  const orig = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '⏳ Running…';
+  try {
+    const result = await botFetch('/run?token=' + encodeURIComponent(botConfig.token));
+    if (result.error) {
+      toast('Bot error: ' + result.error);
+    } else {
+      toast(`✓ Bot ran — ${result.total_new || 0} new jobs${result.sent ? ' · email sent' : ''}`);
+    }
+    await refreshBotData();
+  } catch (err) {
+    toast('Could not reach bot');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = orig;
+  }
+}
+
+function timeAgo(d) {
+  const sec = Math.floor((Date.now() - d.getTime()) / 1000);
+  if (sec < 60) return 'just now';
+  if (sec < 3600) return Math.floor(sec/60) + 'm ago';
+  if (sec < 86400) return Math.floor(sec/3600) + 'h ago';
+  return Math.floor(sec/86400) + 'd ago';
+}
+function timeUntil(d) {
+  const sec = Math.floor((d.getTime() - Date.now()) / 1000);
+  if (sec <= 0) return 'soon';
+  if (sec < 3600) return Math.floor(sec/60) + 'm';
+  if (sec < 86400) return Math.floor(sec/3600) + 'h ' + (Math.floor((sec%3600)/60)) + 'm';
+  return Math.floor(sec/86400) + 'd';
+}
+
+// Background poll — every 60s if bot tab is active
+function startBotPolling() {
+  if (botRefreshTimer) clearInterval(botRefreshTimer);
+  botRefreshTimer = setInterval(() => {
+    if (activeTab === 'bot' && botConfig) refreshBotData();
+  }, 60000);
+}
+startBotPolling();
+
+// Initial health ping on load to set the dot
+(async () => {
+  if (botConfig && botConfig.url) {
+    try {
+      await botFetch('/health');
+      updateBotDot('ok');
+    } catch { updateBotDot('bad'); }
+  }
+})();
+
+render();
+renderJobs();
+document.getElementById('count-plans').textContent = weekPlans.length;
+</script>
+</body>
+</html>
